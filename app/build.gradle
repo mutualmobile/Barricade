@@ -38,4 +38,6 @@ dependencies {
 
   compile project(path: ':barricade-library')
   apt project(':barricade-compiler')
+
+  compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 }
