@@ -1,0 +1,1 @@
+include ':app', ':barricade-annotations', ':barricade-compiler', ':barricade-library'

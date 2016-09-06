@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_barricade"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/endpoint_rv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:listitem="@android:layout/simple_list_item_2"
+      />
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/endpoint_responses_rv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:listitem="@layout/layout_barricade_response_list_item"
+      />
+</RelativeLayout>
