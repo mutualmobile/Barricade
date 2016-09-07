@@ -5,9 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
+import android.widget.TextView;
 import com.mutualmobile.barricade.BarricadeInterceptor;
 import com.mutualmobile.barricade.sample.api.GitHubApiService;
 import com.mutualmobile.barricade.sample.api.model.Repo;
+import java.io.IOException;
 import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     Switch barricadeSwitch = (Switch) findViewById(R.id.switch1);
 
+    final TextView textView = (TextView) findViewById(R.id.textView);
+
     findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
 
@@ -47,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void init() {
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+    httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
     OkHttpClient okHttpClient = new OkHttpClient.Builder()
         .addInterceptor(new BarricadeInterceptor())
-        .addInterceptor(new HttpLoggingInterceptor())
+        .addInterceptor(httpLoggingInterceptor)
         .build();
 
     Retrofit retrofit = new Retrofit.Builder()
