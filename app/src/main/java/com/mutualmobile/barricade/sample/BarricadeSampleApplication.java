@@ -8,6 +8,7 @@ import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
 public class BarricadeSampleApplication extends Application {
   @Override public void onCreate() {
     super.onCreate();
-    Barricade.init(BarricadeConfig.getInstance(), new AndroidAssetFileManager(this));
+    new Barricade.Builder(new BarricadeConfig(),
+        new AndroidAssetFileManager(this)).enableShakeToStart(this).install();
   }
 }

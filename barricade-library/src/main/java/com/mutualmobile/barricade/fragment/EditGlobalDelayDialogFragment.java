@@ -39,7 +39,7 @@ public class EditGlobalDelayDialogFragment extends AppCompatDialogFragment
     cancelButton.setOnClickListener(this);
 
     barricade = Barricade.getInstance();
-    delayValueEditText.setText("" + barricade.getDelay());
+    delayValueEditText.setText(String.valueOf(barricade.getDelay()));
 
     return v;
   }

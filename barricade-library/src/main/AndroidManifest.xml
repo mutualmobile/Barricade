@@ -6,8 +6,9 @@
       android:supportsRtl="true">
     <activity
         android:name="com.mutualmobile.barricade.activity.BarricadeActivity"
-        android:theme="@style/Theme.Barricade"
-        android:label="@string/title_activity"/>
+        android:label="@string/title_activity"
+        android:launchMode="singleInstance"
+        android:theme="@style/Theme.Barricade"/>
   </application>
 
 </manifest>
