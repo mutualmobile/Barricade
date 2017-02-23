@@ -65,7 +65,9 @@ import static javax.tools.Diagnostic.Kind.NOTE;
         }
         configs.put(barricade.endpoint(), new BarricadeResponseSet(responses, defaultIndex));
       }
-      if (!configs.isEmpty()) { // This method is called multiple times, but we want to generate code only once
+
+      // This method is called multiple times, but we want to generate code only once
+      if (!configs.isEmpty()) {
         generateCode(configs);
       }
     } catch (Exception e) {

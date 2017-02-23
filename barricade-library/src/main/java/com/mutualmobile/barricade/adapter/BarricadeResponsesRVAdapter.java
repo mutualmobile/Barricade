@@ -15,15 +15,16 @@ import java.util.List;
  *
  * @author Harish on 29/07/16.
  */
-public class BarricadeResponsesRVAdapter extends RecyclerView.Adapter<BarricadeResponsesRVAdapter.BarricadeResponseViewHolder> {
+public class BarricadeResponsesRVAdapter
+    extends RecyclerView.Adapter<BarricadeResponsesRVAdapter.BarricadeResponseViewHolder> {
 
   private List<BarricadeResponse> barricadeResponses;
   private EndpointResponseClickedListener clickListener;
   private String endpoint;
   private int defaultIndex;
 
-  public BarricadeResponsesRVAdapter(String endpoint, List<BarricadeResponse> endpointResponses, int defaultIndex,
-      EndpointResponseClickedListener clickListener) {
+  public BarricadeResponsesRVAdapter(String endpoint, List<BarricadeResponse> endpointResponses,
+      int defaultIndex, EndpointResponseClickedListener clickListener) {
     this.barricadeResponses = endpointResponses;
     this.clickListener = clickListener;
     this.endpoint = endpoint;
@@ -31,16 +32,17 @@ public class BarricadeResponsesRVAdapter extends RecyclerView.Adapter<BarricadeR
   }
 
   @Override public BarricadeResponseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_barricade_response_list_item, parent, false);
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.layout_barricade_response_list_item, parent, false);
     return new BarricadeResponseViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(BarricadeResponseViewHolder holder, final int position) {
+  @Override public void onBindViewHolder(final BarricadeResponseViewHolder holder, int position) {
     holder.responseFileText.setText(barricadeResponses.get(position).responseFileName);
     holder.responseCodeText.setText(String.valueOf(barricadeResponses.get(position).statusCode));
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        clickListener.onResponseClicked(endpoint, position);
+        clickListener.onResponseClicked(endpoint, holder.getAdapterPosition());
       }
     });
 

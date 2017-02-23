@@ -32,9 +32,11 @@ final class CodeGenerator {
   private static final String CLASS_NAME = "BarricadeConfig";
   private static final String PACKAGE_NAME = "com.com.mutualmobile.barricade";
 
-  private static final ClassName TYPE_BARRICADE_RESPONSE_SET = ClassName.get(BarricadeResponseSet.class);
+  private static final ClassName TYPE_BARRICADE_RESPONSE_SET =
+      ClassName.get(BarricadeResponseSet.class);
   private static final ParameterizedTypeName TYPE_CONFIG =
-      ParameterizedTypeName.get(ClassName.get(HashMap.class), ClassName.get(String.class), ClassName.get(BarricadeResponseSet.class));
+      ParameterizedTypeName.get(ClassName.get(HashMap.class), ClassName.get(String.class),
+          ClassName.get(BarricadeResponseSet.class));
 
   private CodeGenerator() {
   }
@@ -47,15 +49,18 @@ final class CodeGenerator {
    * @param messager Messager to print logs
    * @throws IOException
    */
-  public static void generateClass(ProcessingEnvironment processingEnv, HashMap<String, BarricadeResponseSet> configs, Messager messager)
-      throws IOException {
+  public static void generateClass(ProcessingEnvironment processingEnv,
+      HashMap<String, BarricadeResponseSet> configs, Messager messager) throws IOException {
 
     messager.printMessage(Diagnostic.Kind.NOTE, "Generating configuration code...");
 
     TypeSpec.Builder classBuilder = classBuilder(CLASS_NAME).addModifiers(PUBLIC, FINAL);
 
     FieldSpec valuesField = FieldSpec.builder(TYPE_CONFIG, "configs").addModifiers(PRIVATE).build();
-    FieldSpec instanceField = FieldSpec.builder(ClassName.get(PACKAGE_NAME, CLASS_NAME), "barricadeConfig").addModifiers(PRIVATE, STATIC).build();
+    FieldSpec instanceField =
+        FieldSpec.builder(ClassName.get(PACKAGE_NAME, CLASS_NAME), "barricadeConfig")
+            .addModifiers(PRIVATE, STATIC)
+            .build();
 
     MethodSpec.Builder instanceMethodBuilder = generateGetInstanceMethodBuilder();
     MethodSpec.Builder constructorMethodBuilder = generateConstructorBuilder(configs, messager);
@@ -79,10 +84,14 @@ final class CodeGenerator {
   }
 
   private static MethodSpec.Builder generateGetConfigsMethodBuilder() {
-    return MethodSpec.methodBuilder("getConfigs").returns(TYPE_CONFIG).addModifiers(PUBLIC).addStatement("return configs");
+    return MethodSpec.methodBuilder("getConfigs")
+        .returns(TYPE_CONFIG)
+        .addModifiers(PUBLIC)
+        .addStatement("return configs");
   }
 
-  private static MethodSpec.Builder generateConstructorBuilder(HashMap<String, BarricadeResponseSet> values, Messager messager) {
+  private static MethodSpec.Builder generateConstructorBuilder(
+      HashMap<String, BarricadeResponseSet> values, Messager messager) {
     MethodSpec.Builder methodBuilder = MethodSpec.constructorBuilder().addModifiers(PUBLIC);
     methodBuilder.addStatement("configs = new HashMap<>()");
 
@@ -91,15 +100,18 @@ final class CodeGenerator {
 
       String listName = "barricadeResponsesFor" + entry.getKey();
 
-      methodBuilder.addStatement("$T<$T> " + listName + " = new $T<>()", List.class, BarricadeResponse.class, ArrayList.class);
+      methodBuilder.addStatement("$T<$T> " + listName + " = new $T<>()", List.class,
+          BarricadeResponse.class, ArrayList.class);
 
       for (BarricadeResponse barricadeResponse : barricadeResponseSet.responses) {
-        methodBuilder.addStatement(listName + ".add(new $T($L, $S, $S))", BarricadeResponse.class, barricadeResponse.statusCode,
-            barricadeResponse.responseFileName, barricadeResponse.contentType);
+        methodBuilder.addStatement(listName + ".add(new $T($L, $S, $S))", BarricadeResponse.class,
+            barricadeResponse.statusCode, barricadeResponse.responseFileName,
+            barricadeResponse.contentType);
       }
 
-      methodBuilder.addStatement("configs.put($S, new $T(" + listName + ", " + barricadeResponseSet.defaultIndex + "))", entry.getKey(),
-          TYPE_BARRICADE_RESPONSE_SET);
+      methodBuilder.addStatement(
+          "configs.put($S, new $T(" + listName + ", " + barricadeResponseSet.defaultIndex + "))",
+          entry.getKey(), TYPE_BARRICADE_RESPONSE_SET);
     }
     return methodBuilder;
   }
@@ -108,7 +120,8 @@ final class CodeGenerator {
     return MethodSpec.methodBuilder("getInstance")
         .returns(ClassName.get(PACKAGE_NAME, CLASS_NAME))
         .addModifiers(PUBLIC, STATIC)
-        .addStatement("return barricadeConfig = barricadeConfig != null? barricadeConfig:" + " new BarricadeConfig()");
+        .addStatement("return barricadeConfig = barricadeConfig != null? barricadeConfig:"
+            + " new BarricadeConfig()");
   }
 
   private static MethodSpec.Builder generateGetResponseMethodBuilder() {
