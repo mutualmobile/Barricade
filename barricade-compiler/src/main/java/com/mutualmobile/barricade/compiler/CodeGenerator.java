@@ -1,4 +1,4 @@
-package com.mutualmobile;
+package com.mutualmobile.barricade.compiler;
 
 import com.mutualmobile.barricade.IBarricadeConfig;
 import com.mutualmobile.barricade.response.BarricadeResponse;

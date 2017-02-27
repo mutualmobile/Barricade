@@ -1,4 +1,4 @@
-package com.mutualmobile;
+package com.mutualmobile.barricade.compiler;
 
 import com.google.auto.service.AutoService;
 import com.mutualmobile.barricade.annotation.Barricade;
