@@ -35,7 +35,7 @@ dependencies {
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:25.2.0'
 
-  compile project(path: ':barricade-library')
+  compile project(':barricade')
   apt project(':barricade-compiler')
 
   compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'

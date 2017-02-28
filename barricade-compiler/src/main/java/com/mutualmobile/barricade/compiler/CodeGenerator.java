@@ -30,7 +30,7 @@ import static javax.lang.model.element.Modifier.STATIC;
  */
 final class CodeGenerator {
   private static final String CLASS_NAME = "BarricadeConfig";
-  private static final String PACKAGE_NAME = "com.com.mutualmobile.barricade";
+  private static final String PACKAGE_NAME = "com.mutualmobile.barricade";
 
   private static final ClassName TYPE_BARRICADE_RESPONSE_SET =
       ClassName.get(BarricadeResponseSet.class);
