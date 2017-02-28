@@ -1,17 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'android-apt'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-  }
-}
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
@@ -20,10 +11,11 @@ android {
     minSdkVersion 16
     targetSdkVersion 25
     versionCode 1
-    versionName "1.0"
+    versionName VERSION_NAME
     vectorDrawables.useSupportLibrary = true
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -39,10 +31,12 @@ android {
 
 ext {
   supportLibVersion = "25.2.0"
+
+  bintrayName = 'barricade'
+  libraryName = 'Barricade'
 }
 
 dependencies {
-  compile fileTree(include: ['*.jar'], dir: 'libs')
   compile project(':barricade-annotations')
 
   compile "com.android.support:appcompat-v7:${supportLibVersion}"
@@ -55,3 +49,5 @@ dependencies {
   androidTestCompile 'com.android.support.test:runner:0.5'
   androidTestCompile "com.android.support:support-annotations:${supportLibVersion}"
 }
+
+apply from: '../bintray.gradle'
