@@ -2,7 +2,7 @@ package com.mutualmobile.barricade.compiler;
 
 import com.google.auto.service.AutoService;
 import com.mutualmobile.barricade.annotation.Barricade;
-import com.mutualmobile.barricade.annotation.ResponseType;
+import com.mutualmobile.barricade.annotation.Response;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import java.io.IOException;
@@ -53,11 +53,11 @@ import static javax.tools.Diagnostic.Kind.NOTE;
         Barricade barricade = annotatedElement.getAnnotation(Barricade.class);
         messager.printMessage(NOTE, "[Barricade] Processing endpoint: " + barricade.endpoint());
 
-        List<BarricadeResponse> responses = new ArrayList<>(barricade.options().length);
+        List<BarricadeResponse> responses = new ArrayList<>(barricade.responses().length);
         int defaultIndex = 0;
 
-        for (int i = 0; i < barricade.options().length; i++) {
-          ResponseType option = barricade.options()[i];
+        for (int i = 0; i < barricade.responses().length; i++) {
+          Response option = barricade.responses()[i];
           responses.add(new BarricadeResponse(option));
           if (option.isDefault()) {
             defaultIndex = i;

@@ -1,6 +1,6 @@
 package com.mutualmobile.barricade.response;
 
-import com.mutualmobile.barricade.annotation.ResponseType;
+import com.mutualmobile.barricade.annotation.Response;
 
 /**
  * @author phaniraja.bhandari, 7/27/16.
@@ -17,9 +17,9 @@ public class BarricadeResponse {
     this.contentType = contentType;
   }
 
-  public BarricadeResponse(ResponseType responseType) {
-    this.statusCode = responseType.statusCode();
-    this.responseFileName = responseType.fileName();
-    this.contentType = responseType.type();
+  public BarricadeResponse(Response response) {
+    this.statusCode = response.statusCode();
+    this.responseFileName = response.fileName();
+    this.contentType = response.type();
   }
 }

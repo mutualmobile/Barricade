@@ -6,7 +6,7 @@ package com.mutualmobile.barricade.annotation;
  *
  * @author phaniraja.bhandari, 7/27/16.
  */
-public @interface ResponseType {
+public @interface Response {
 
   String fileName();
 

@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  * @author phaniraja.bhandari, 7/25/16.
  */
 @Documented @Retention(CLASS) @Target(ElementType.METHOD) public @interface Barricade {
-  String endpoint();
+  String endpoint() default "";
 
-  ResponseType[] options();
+  Response[] responses() default {};
 }
