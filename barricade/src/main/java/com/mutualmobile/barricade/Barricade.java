@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
+import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
 import com.mutualmobile.barricade.utils.AssetFileManager;
 import com.mutualmobile.barricade.utils.BarricadeShakeListener;
 import java.io.File;
@@ -32,6 +33,8 @@ public class Barricade {
   private AssetFileManager fileManager;
   private long delay = DEFAULT_DELAY;
 
+  private boolean disabled = false;
+
   /**
    * @return The singleton instance of the Barricade
    */
@@ -57,6 +60,20 @@ public class Barricade {
     }
   }
 
+  public boolean isDisabled() {
+    return disabled;
+  }
+
+  public void enable() {
+    Logger.getLogger(TAG).info("Barricade enabled.");
+    this.disabled = false;
+  }
+
+  public void disable() {
+    Logger.getLogger(TAG).info("Barricade disabled.");
+    this.disabled = true;
+  }
+
   /**
    * Builder class for Barricade
    */
@@ -66,7 +83,11 @@ public class Barricade {
     private long delay = DEFAULT_DELAY;
     private Context context;
 
-    public Builder(IBarricadeConfig barricadeConfig, AssetFileManager fileManager) {
+    public Builder(Context context, IBarricadeConfig barricadeConfig) {
+      this(barricadeConfig, new AndroidAssetFileManager(context));
+    }
+
+    private Builder(IBarricadeConfig barricadeConfig, AssetFileManager fileManager) {
       this.barricadeConfig = barricadeConfig;
       this.fileManager = fileManager;
     }
