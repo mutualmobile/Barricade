@@ -17,6 +17,10 @@ public class BarricadeInterceptor implements Interceptor {
   private Barricade barricade = Barricade.getInstance();
 
   @Override public Response intercept(Chain chain) throws IOException {
+    if (barricade.isDisabled()) {
+      return chain.proceed(chain.request());
+    }
+
     Request request = chain.request();
 
     List<String> pathSegments = request.url().pathSegments();
