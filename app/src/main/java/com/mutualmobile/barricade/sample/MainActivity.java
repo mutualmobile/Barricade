@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
   private void checkChanged(boolean isChecked) {
     if (isChecked) {
-      Barricade.getInstance().disable();
-    } else {
       Barricade.getInstance().enable();
+    } else {
+      Barricade.getInstance().disable();
     }
   }
 
