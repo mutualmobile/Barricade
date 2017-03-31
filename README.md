@@ -60,6 +60,14 @@ dependencies {
   })
   ...
   ```
+4. Add `BarricadeInterceptor` to your `OkHttpClient`
+
+  ```
+  OkHttpClient okHttpClient =
+        new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor())
+            ...
+            .build();
+  ```
 
 #### Enable/ Disable Barricade
 Barricade can be enabled or disabled at runtime.
