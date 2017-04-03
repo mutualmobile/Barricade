@@ -64,15 +64,6 @@ public class Barricade {
     return disabled;
   }
 
-  public void enable() {
-    Logger.getLogger(TAG).info("Barricade enabled.");
-    this.disabled = false;
-  }
-
-  public void disable() {
-    Logger.getLogger(TAG).info("Barricade disabled.");
-    this.disabled = true;
-  }
 
   /**
    * Builder class for Barricade
@@ -148,9 +139,6 @@ public class Barricade {
     return delay;
   }
 
-  public void setDelay(long delay) {
-    this.delay = delay;
-  }
 
   @NonNull private String getResponseFromFile(String endpoint, String variant) {
     String fileName =
@@ -161,18 +149,30 @@ public class Barricade {
   /**
    * Methods for changing response and delay programmatically for testing
    */
-  public Barricade enabled(boolean enabled) {
-    this.disabled = !enabled;
+
+  public Barricade enable() {
+    Logger.getLogger(TAG).info("Barricade enabled.");
+    this.disabled = false;
     return this;
   }
 
-  public Barricade withDelay(long delay) {
+  public Barricade disable() {
+    Logger.getLogger(TAG).info("Barricade disabled.");
+    this.disabled = true;
+    return this;
+  }
+
+  public Barricade setDelay(long delay) {
     this.delay = delay;
     return this;
   }
 
   public Barricade withResponse(String endPoint, int defaultIndex) {
-    getConfig().get(endPoint).defaultIndex = defaultIndex;
-    return this;
+    if (getConfig().containsKey(endPoint)) {
+      getConfig().get(endPoint).defaultIndex = defaultIndex;
+      return this;
+    } else {
+      throw new IllegalArgumentException("Endpoint doesn't exist");
+    }
   }
 }
