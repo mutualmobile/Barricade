@@ -2,6 +2,7 @@ package com.mutualmobile.barricade;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
@@ -63,7 +64,6 @@ public class Barricade {
   public boolean isDisabled() {
     return disabled;
   }
-
 
   /**
    * Builder class for Barricade
@@ -139,7 +139,6 @@ public class Barricade {
     return delay;
   }
 
-
   @NonNull private String getResponseFromFile(String endpoint, String variant) {
     String fileName =
         ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
@@ -147,26 +146,41 @@ public class Barricade {
   }
 
   /**
-   * Methods for changing response and delay programmatically for testing
+   * Enable Barricade
    */
-
   public Barricade enable() {
     Logger.getLogger(TAG).info("Barricade enabled.");
     this.disabled = false;
     return this;
   }
 
+  /**
+   * Disable Barricade
+   */
   public Barricade disable() {
     Logger.getLogger(TAG).info("Barricade disabled.");
     this.disabled = true;
     return this;
   }
 
+  /**
+   * Set delay for responses sent by Barricade
+   *
+   * @param delay Delay in milliseconds
+   */
   public Barricade setDelay(long delay) {
     this.delay = delay;
     return this;
   }
 
+  /**
+   * Change response to be returned for an endpoint
+   *
+   * @param endPoint The endpoint whose response you want to change. Use BarricadeConfig$EndPoints
+   * to
+   * get endpoint strings rather than passing string directly
+   * @param defaultIndex The index of the response you want to get for endPoint
+   */
   public Barricade withResponse(String endPoint, int defaultIndex) {
     if (getConfig().containsKey(endPoint)) {
       getConfig().get(endPoint).defaultIndex = defaultIndex;
