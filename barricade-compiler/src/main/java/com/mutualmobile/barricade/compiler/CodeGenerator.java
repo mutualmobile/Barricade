@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.Diagnostic;
@@ -30,6 +31,7 @@ import static javax.lang.model.element.Modifier.STATIC;
  */
 final class CodeGenerator {
   private static final String CLASS_NAME = "BarricadeConfig";
+  private static final String ENDPOINTS_CLASS_NAME = "Endpoints";
   private static final String PACKAGE_NAME = "com.mutualmobile.barricade";
 
   private static final ClassName TYPE_BARRICADE_RESPONSE_SET =
@@ -73,6 +75,7 @@ final class CodeGenerator {
     classBuilder.addMethod(constructorMethodBuilder.build());
     classBuilder.addMethod(valuesMethod.build());
     classBuilder.addMethod(getResponseMethodBuilder.build());
+    classBuilder.addType(generateEndpointsInnerClass(configs.keySet()));
 
     classBuilder.addSuperinterface(IBarricadeConfig.class);
 
@@ -81,6 +84,19 @@ final class CodeGenerator {
     javaFile.writeTo(processingEnv.getFiler());
 
     messager.printMessage(Diagnostic.Kind.NOTE, "Code generation complete!");
+  }
+
+  private static TypeSpec generateEndpointsInnerClass(Set<String> endPoints) {
+    TypeSpec.Builder classBuilder = classBuilder(ENDPOINTS_CLASS_NAME).addModifiers(PUBLIC, FINAL);
+    for (String endPoint : endPoints) {
+      FieldSpec valuesField =
+          FieldSpec.builder(String.class, endPoint.toUpperCase().replace(" ", "_"))
+              .addModifiers(PUBLIC, STATIC, FINAL)
+              .initializer("$S", endPoint)
+              .build();
+      classBuilder.addField(valuesField);
+    }
+    return classBuilder.build();
   }
 
   private static MethodSpec.Builder generateGetConfigsMethodBuilder() {

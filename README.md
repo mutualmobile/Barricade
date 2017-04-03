@@ -83,9 +83,10 @@ the list of responses. This list is populated from the response files in assets 
 
 You can also change the above settings programmatically which can be helpful for testing - 
 ```
-Barricade.getInstance().enable().setDelay(100).withResponse("repos",1); 
+Barricade.getInstance().enable().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS,1); 
 ```
-`withResponse()` changes the default index of the endpoint passed in the first parameter. 
+* `withResponse()` changes the default index of the endpoint passed in the first parameter. 
+
 
 **Note:** Using the above technique will also save the settings and apply to other responses as well, not just the
 next response, until changed.
