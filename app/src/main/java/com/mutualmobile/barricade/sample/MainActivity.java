@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-
-        Barricade.getInstance().enable().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);
         showProgress(true);
         gitHubApiService.getUserRepos("google").enqueue(new Callback<List<Repo>>() {
           @Override public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
