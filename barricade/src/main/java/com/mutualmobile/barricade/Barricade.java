@@ -157,4 +157,22 @@ public class Barricade {
         ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
     return fileManager.getContentsOfFileAsString(fileName);
   }
+
+  /**
+   * Methods for changing response and delay programmatically for testing
+   */
+  public Barricade enabled(boolean enabled) {
+    this.disabled = !enabled;
+    return this;
+  }
+
+  public Barricade withDelay(long delay) {
+    this.delay = delay;
+    return this;
+  }
+
+  public Barricade withResponse(String endPoint, int defaultIndex) {
+    getConfig().get(endPoint).defaultIndex = defaultIndex;
+    return this;
+  }
 }

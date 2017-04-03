@@ -80,3 +80,12 @@ Barricade allows you to change the response time and the required response for a
 * Change the response time in milliseconds by clicking on the timer on top right
 * To change the required response for a request, click on the request from list and then select the response you want from
 the list of responses. This list is populated from the response files in assets folder
+
+You can also change the above settings programmatically which can be helpful for testing - 
+```
+Barricade.getInstance().enabled(true).withDelay(100).withResponse("repos",1); 
+```
+`withResponse()` changes the default index of the endpoint passed in the first parameter. 
+
+**Note:** Using the above technique will also save the settings and apply to other responses as well, not just the
+next response, until changed.
