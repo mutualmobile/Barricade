@@ -32,6 +32,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 final class CodeGenerator {
   private static final String CLASS_NAME = "BarricadeConfig";
   private static final String ENDPOINTS_CLASS_NAME = "Endpoints";
+  private static final String RESPONSES_CLASS_NAME = "Responses";
   private static final String PACKAGE_NAME = "com.mutualmobile.barricade";
 
   private static final ClassName TYPE_BARRICADE_RESPONSE_SET =
@@ -69,13 +70,14 @@ final class CodeGenerator {
     MethodSpec.Builder valuesMethod = generateGetConfigsMethodBuilder();
     MethodSpec.Builder getResponseMethodBuilder = generateGetResponseMethodBuilder();
 
+    classBuilder.addType(generateEndpointsInnerClass(configs.keySet()));
+    classBuilder.addType(generateResponsesInnerClass(configs));
     classBuilder.addField(instanceField);
     classBuilder.addField(valuesField);
     classBuilder.addMethod(instanceMethodBuilder.build());
     classBuilder.addMethod(constructorMethodBuilder.build());
     classBuilder.addMethod(valuesMethod.build());
     classBuilder.addMethod(getResponseMethodBuilder.build());
-    classBuilder.addType(generateEndpointsInnerClass(configs.keySet()));
 
     classBuilder.addSuperinterface(IBarricadeConfig.class);
 
@@ -90,11 +92,39 @@ final class CodeGenerator {
     TypeSpec.Builder classBuilder = classBuilder(ENDPOINTS_CLASS_NAME).addModifiers(PUBLIC, FINAL);
     for (String endPoint : endPoints) {
       FieldSpec valuesField =
-          FieldSpec.builder(String.class, endPoint.toUpperCase().replace(" ", "_"))
+          FieldSpec.builder(String.class, endPoint.toUpperCase().replace(" ", ""))
               .addModifiers(PUBLIC, STATIC, FINAL)
               .initializer("$S", endPoint)
               .build();
       classBuilder.addField(valuesField);
+    }
+    return classBuilder.build();
+  }
+
+  private static TypeSpec generateResponsesInnerClass(
+      HashMap<String, BarricadeResponseSet> configs) {
+
+    TypeSpec.Builder classBuilder = classBuilder(RESPONSES_CLASS_NAME).addModifiers(PUBLIC, FINAL);
+    for (String endpoint : configs.keySet()) {
+      classBuilder.addType(
+          generateEndpointsResponsesInnerClass(endpoint, configs.get(endpoint).responses));
+    }
+    return classBuilder.build();
+  }
+
+  private static TypeSpec generateEndpointsResponsesInnerClass(String endpoint,
+      List<BarricadeResponse> responses) {
+    TypeSpec.Builder classBuilder =
+        classBuilder(StringUtils.toCamelCase(endpoint)).addModifiers(PUBLIC, FINAL);
+    int count = 0;
+    for (BarricadeResponse response : responses) {
+      FieldSpec valuesField =
+          FieldSpec.builder(int.class, StringUtils.toCamelCase(response.responseFileName))
+              .addModifiers(PUBLIC, STATIC, FINAL)
+              .initializer("$L", count)
+              .build();
+      classBuilder.addField(valuesField);
+      count++;
     }
     return classBuilder.build();
   }

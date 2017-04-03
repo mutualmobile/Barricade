@@ -179,7 +179,9 @@ public class Barricade {
    * @param endPoint The endpoint whose response you want to change. Use BarricadeConfig$EndPoints
    * to
    * get endpoint strings rather than passing string directly
-   * @param defaultIndex The index of the response you want to get for endPoint
+   *
+   * @param defaultIndex The index of the response you want to get for endPoint. Use
+   * BarricadeConfig$Responses to get responses for an endpoint instead of passing an int directly
    */
   public Barricade withResponse(String endPoint, int defaultIndex) {
     if (getConfig().containsKey(endPoint)) {
