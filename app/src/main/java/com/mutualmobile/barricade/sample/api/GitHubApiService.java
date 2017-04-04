@@ -8,10 +8,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface GitHubApiService {
+public interface  GitHubApiService {
 
   @GET("/users/{user}/repos") @Barricade(endpoint = "repos", responses = {
-      @Response(fileName = "get_repos_success", isDefault = true)
+      @Response(fileName = "success", isDefault = true),
+      @Response(fileName = "failure")
   })
   Call<List<Repo>> getUserRepos(@Path("user") String user);
 }

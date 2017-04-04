@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.mutualmobile.barricade.Barricade;
+import com.mutualmobile.barricade.BarricadeConfig;
 import com.mutualmobile.barricade.BarricadeInterceptor;
 import com.mutualmobile.barricade.sample.api.GitHubApiService;
 import com.mutualmobile.barricade.sample.api.model.Repo;
