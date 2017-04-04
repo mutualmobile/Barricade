@@ -89,13 +89,14 @@ final class CodeGenerator {
   }
 
   private static TypeSpec generateEndpointsInnerClass(Set<String> endPoints) {
-    TypeSpec.Builder classBuilder = classBuilder(ENDPOINTS_CLASS_NAME).addModifiers(PUBLIC, STATIC, FINAL);
+    TypeSpec.Builder classBuilder =
+        classBuilder(ENDPOINTS_CLASS_NAME).addModifiers(PUBLIC, STATIC, FINAL);
     for (String endPoint : endPoints) {
-      FieldSpec valuesField =
-          FieldSpec.builder(String.class, endPoint.toUpperCase().replace(" ", ""))
-              .addModifiers(PUBLIC, STATIC, FINAL)
-              .initializer("$S", endPoint)
-              .build();
+      FieldSpec valuesField = FieldSpec.builder(String.class,
+          StringUtils.removeAllSpecialCharacters(endPoint).toUpperCase())
+          .addModifiers(PUBLIC, STATIC, FINAL)
+          .initializer("$S", endPoint)
+          .build();
       classBuilder.addField(valuesField);
     }
     return classBuilder.build();
@@ -104,7 +105,8 @@ final class CodeGenerator {
   private static TypeSpec generateResponsesInnerClass(
       HashMap<String, BarricadeResponseSet> configs) {
 
-    TypeSpec.Builder classBuilder = classBuilder(RESPONSES_CLASS_NAME).addModifiers(PUBLIC, STATIC, FINAL);
+    TypeSpec.Builder classBuilder =
+        classBuilder(RESPONSES_CLASS_NAME).addModifiers(PUBLIC, STATIC, FINAL);
     for (String endpoint : configs.keySet()) {
       classBuilder.addType(
           generateEndpointsResponsesInnerClass(endpoint, configs.get(endpoint).responses));
@@ -118,11 +120,11 @@ final class CodeGenerator {
         classBuilder(StringUtils.toCamelCase(endpoint)).addModifiers(PUBLIC, STATIC, FINAL);
     int count = 0;
     for (BarricadeResponse response : responses) {
-      FieldSpec valuesField =
-          FieldSpec.builder(int.class, response.responseFileName.toUpperCase().replace(" ",""))
-              .addModifiers(PUBLIC, STATIC, FINAL)
-              .initializer("$L", count)
-              .build();
+      FieldSpec valuesField = FieldSpec.builder(int.class,
+          StringUtils.removeAllSpecialCharacters(response.responseFileName).toUpperCase())
+          .addModifiers(PUBLIC, STATIC, FINAL)
+          .initializer("$L", count)
+          .build();
       classBuilder.addField(valuesField);
       count++;
     }

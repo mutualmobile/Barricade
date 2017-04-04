@@ -3,7 +3,9 @@ package com.mutualmobile.barricade.compiler;
 class StringUtils {
   static String toCamelCase(String str) {
 
-    return generateCamelString(generateCamelString(str, " "), "_").replace(" ","");
+    str = str.replaceAll("[^\\w]+", "");
+
+    return generateCamelString(generateCamelString(str, " "), "_").replace(" ", "");
   }
 
   private static String generateCamelString(String str, String separator) {
@@ -20,5 +22,9 @@ class StringUtils {
       }
     }
     return sb.toString();
+  }
+
+  static String removeAllSpecialCharacters(String string) {
+    return string.replaceAll("[^\\w_]+", "").replaceAll(" ","");
   }
 }
