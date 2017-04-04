@@ -140,6 +140,7 @@ public class Barricade {
   }
 
   @NonNull private String getResponseFromFile(String endpoint, String variant) {
+    // TODO: 4/4/17 Check with other file formats other than JSON
     String fileName =
         ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
     return fileManager.getContentsOfFileAsString(fileName);
