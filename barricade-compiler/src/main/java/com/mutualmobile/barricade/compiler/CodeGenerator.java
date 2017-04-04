@@ -89,7 +89,7 @@ final class CodeGenerator {
   }
 
   private static TypeSpec generateEndpointsInnerClass(Set<String> endPoints) {
-    TypeSpec.Builder classBuilder = classBuilder(ENDPOINTS_CLASS_NAME).addModifiers(PUBLIC, FINAL);
+    TypeSpec.Builder classBuilder = classBuilder(ENDPOINTS_CLASS_NAME).addModifiers(PUBLIC, STATIC, FINAL);
     for (String endPoint : endPoints) {
       FieldSpec valuesField =
           FieldSpec.builder(String.class, endPoint.toUpperCase().replace(" ", ""))
@@ -104,7 +104,7 @@ final class CodeGenerator {
   private static TypeSpec generateResponsesInnerClass(
       HashMap<String, BarricadeResponseSet> configs) {
 
-    TypeSpec.Builder classBuilder = classBuilder(RESPONSES_CLASS_NAME).addModifiers(PUBLIC, FINAL);
+    TypeSpec.Builder classBuilder = classBuilder(RESPONSES_CLASS_NAME).addModifiers(PUBLIC, STATIC, FINAL);
     for (String endpoint : configs.keySet()) {
       classBuilder.addType(
           generateEndpointsResponsesInnerClass(endpoint, configs.get(endpoint).responses));
@@ -115,11 +115,11 @@ final class CodeGenerator {
   private static TypeSpec generateEndpointsResponsesInnerClass(String endpoint,
       List<BarricadeResponse> responses) {
     TypeSpec.Builder classBuilder =
-        classBuilder(StringUtils.toCamelCase(endpoint)).addModifiers(PUBLIC, FINAL);
+        classBuilder(StringUtils.toCamelCase(endpoint)).addModifiers(PUBLIC, STATIC, FINAL);
     int count = 0;
     for (BarricadeResponse response : responses) {
       FieldSpec valuesField =
-          FieldSpec.builder(int.class, StringUtils.toCamelCase(response.responseFileName))
+          FieldSpec.builder(int.class, response.responseFileName.toUpperCase().replace(" ",""))
               .addModifiers(PUBLIC, STATIC, FINAL)
               .initializer("$L", count)
               .build();
