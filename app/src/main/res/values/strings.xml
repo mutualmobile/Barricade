@@ -1,4 +1,7 @@
 <resources>
   <string name="app_name">Barricade Sample</string>
   <string name="click_me">Click me!</string>
+
+  <string name="get_repos">Get Github Repos</string>
+  <string name="get_joke">Get Chuck Norris Joke</string>
 </resources>
