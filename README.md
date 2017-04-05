@@ -56,7 +56,7 @@ dependencies {
   @GET("/users/{user}/repos")
   @Barricade(endpoint = "repos", responses = {
           @Response(fileName = "get_repos_success", isDefault = true),
-          @Response(fileName = "get_repos_invalid", isDefault = false)
+          @Response(fileName = "get_repos_error", statusCode = 500)
   })
   ...
   ```

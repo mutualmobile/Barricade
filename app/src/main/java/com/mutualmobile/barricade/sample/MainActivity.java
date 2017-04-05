@@ -84,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
         showProgress(true);
         gitHubApiService.getRandomChuckNorrisJoke().enqueue(new Callback<Joke>() {
           @Override public void onResponse(Call<Joke> call, Response<Joke> response) {
-            showJoke(response.body().value);
+            if(response.isSuccessful()) {
+              showJoke(response.body().value);
+            }
+            else {
+              Log.e(TAG,"UnSuccessful Status Code Response: "+response.code());
+            }
             showProgress(false);
           }
 
@@ -120,8 +125,7 @@ public class MainActivity extends AppCompatActivity {
   private void showRepoList(List<Repo> repoList) {
     cardInfo.setVisibility(View.GONE);
     repoListView.setVisibility(View.VISIBLE);
-    repoListAdapter.setRepoList(new ArrayList<>(repoList));
-    repoListAdapter.notifyDataSetChanged();
+    repoListAdapter.setRepoList(repoList);
   }
 
   private void showJoke(String joke) {
@@ -148,10 +152,9 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void initRecyclerView() {
-
     repoListView = (RecyclerView) findViewById(R.id.repo_list);
     repoListView.setLayoutManager(new LinearLayoutManager(this));
-    repoListAdapter = new RepoListAdapter(new ArrayList<Repo>());
+    repoListAdapter = new RepoListAdapter();
     repoListView.setAdapter(repoListAdapter);
   }
 }

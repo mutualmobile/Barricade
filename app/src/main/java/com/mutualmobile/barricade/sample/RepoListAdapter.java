@@ -10,53 +10,49 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.mutualmobile.barricade.sample.api.model.Repo;
 import java.util.ArrayList;
+import java.util.List;
 
 class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
 
-  private ArrayList<Repo> repoList;
+  private List<Repo> repoList;
 
-  RepoListAdapter(ArrayList<Repo> repoList) {
+  void setRepoList(List<Repo> repoList) {
     this.repoList = repoList;
-  }
-
-  void setRepoList(ArrayList<Repo> repoList) {
-    this.repoList = repoList;
+    notifyDataSetChanged();
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repo, parent, false);
-    return new ViewHolder(v);
+    return new ViewHolder(
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repo, parent, false));
   }
 
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     holder.repoTextView.setText(repoList.get(position).name);
-  }
-
-  @Override public int getItemCount() {
-    return repoList == null ? 0 : repoList.size();
-  }
-
-  class ViewHolder extends RecyclerView.ViewHolder {
-
-    TextView repoTextView;
-
-    ViewHolder(View itemView) {
-      super(itemView);
-
-      repoTextView = (TextView) itemView.findViewById(R.id.repo_name);
-
-      itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-          Repo repo = repoList.get(getAdapterPosition());
-          openGithubRepo(view.getContext(), "http://www.github.com/" + repo.full_name);
-        }
-      });
-    }
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        Repo repo = repoList.get(holder.getAdapterPosition());
+        openGithubRepo(view.getContext(), "http://www.github.com/" + repo.full_name);
+      }
+    });
   }
 
   private void openGithubRepo(Context context, String url) {
     Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(url));
     context.startActivity(i);
+  }
+
+  @Override public int getItemCount() {
+    return repoList == null ? 0 : repoList.size();
+  }
+
+  static class ViewHolder extends RecyclerView.ViewHolder {
+
+    TextView repoTextView;
+
+    ViewHolder(View itemView) {
+      super(itemView);
+      repoTextView = (TextView) itemView.findViewById(R.id.repo_name);
+    }
   }
 }
