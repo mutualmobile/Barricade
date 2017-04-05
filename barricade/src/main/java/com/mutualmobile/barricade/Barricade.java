@@ -3,6 +3,7 @@ package com.mutualmobile.barricade;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
+import android.util.Log;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
@@ -27,7 +28,7 @@ import okhttp3.ResponseBody;
 public class Barricade {
   static final String TAG = "Barricade";
   private static final String ROOT_DIRECTORY = "barricade";
-  private static final long DEFAULT_DELAY = 1500;
+  private static final long DEFAULT_DELAY = 150;
   private static Barricade instance;
 
   private IBarricadeConfig barricadeConfig;
