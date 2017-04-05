@@ -13,7 +13,7 @@ at runtime.
 
 **Barricade is currently in beta and works only with Retrofit-OkHttp at the moment.**
 
-![](/art/In_action.gif)
+<img src="https://github.com/mutualmobile/Barricade/blob/master/art/In_action.gif" width="288" height="512">
 
 ## When to use
 
