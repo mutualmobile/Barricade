@@ -13,6 +13,7 @@ at runtime.
 
 **Barricade is currently in beta and works only with Retrofit-OkHttp at the moment.**
 
+![](/art/In_action.gif)
 
 ## When to use
 
