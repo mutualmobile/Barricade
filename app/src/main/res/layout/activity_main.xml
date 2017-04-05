@@ -1,51 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mutualmobile.barricade.sample.MainActivity"
     >
-
-  <Button
-      android:id="@+id/button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/switch1"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="20dp"
-      android:text="@string/click_me"
-      />
   <Switch
       android:id="@+id/switch1"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      android:layout_centerHorizontal="true"
       android:checked="false"
       android:text="Barricade"
+      android:textSize="15sp"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
       />
 
-  <ScrollView
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_alignEnd="@+id/switch1"
-      android:layout_alignRight="@+id/switch1"
-      android:layout_below="@+id/button"
-      android:layout_marginTop="30dp"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentStart="true"
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:gravity="center"
       >
+    <Button
+        android:id="@+id/get_repos_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_repos"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        />
+
+    <Button
+        android:id="@+id/get_joke_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_joke"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        />
+  </LinearLayout>
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/repo_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:visibility="gone"
+      />
+
+  <android.support.v7.widget.CardView
+      android:orientation="horizontal"
+      android:id="@+id/card_info"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="28dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginBottom="4dp"
+      card_view:cardCornerRadius="4dp"
+      android:visibility="gone">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:id="@+id/joke_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Response shows up here"
-        />
-  </ScrollView>
-</RelativeLayout>
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"/>
+  </android.support.v7.widget.CardView>
+</LinearLayout>

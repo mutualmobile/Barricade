@@ -6,15 +6,15 @@ public class Repo {
   public String full_name;
 
   @Override public String toString() {
-    return "Repo{"
+    return "Repo{\n"
         + "id="
         + id
-        + ", name='"
+        + ",\nname='"
         + name
         + '\''
-        + ", full_name='"
+        + ",\nfull_name='"
         + full_name
         + '\''
-        + '}';
+        + "}\n\n";
   }
 }
