@@ -83,7 +83,7 @@ the list of responses. This list is populated from the response files in assets 
 
 You can also change the above settings programmatically which can be helpful for testing - 
 ```
-Barricade.getInstance().enable().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);; 
+Barricade.getInstance().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);; 
 ```
 * `withResponse()` changes the response of the endpoint passed in the first parameter. 
 
