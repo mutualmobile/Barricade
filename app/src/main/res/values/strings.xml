@@ -4,4 +4,6 @@
 
   <string name="get_repos">Get Github Repos</string>
   <string name="get_joke">Get Chuck Norris Joke</string>
+  <string name="remote_response">Fetching Remote Response</string>
+  <string name="barricade_response">Using Barricade</string>
 </resources>

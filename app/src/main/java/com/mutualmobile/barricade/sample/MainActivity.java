@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.mutualmobile.barricade.Barricade;
 import com.mutualmobile.barricade.BarricadeInterceptor;
 import com.mutualmobile.barricade.sample.api.GitHubApiService;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     findViewById(R.id.get_repos_button).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-
+        showInfoToast();
         showProgress(true);
         gitHubApiService.getUserRepos("google").enqueue(new Callback<List<Repo>>() {
           @Override public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     findViewById(R.id.get_joke_button).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-
+        showInfoToast();
         showProgress(true);
         gitHubApiService.getRandomChuckNorrisJoke().enqueue(new Callback<Joke>() {
           @Override public void onResponse(Call<Joke> call, Response<Joke> response) {
@@ -132,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
     repoListView.setVisibility(View.GONE);
     cardInfo.setVisibility(View.VISIBLE);
     jokeTextView.setText(joke);
+  }
+
+  private void showInfoToast() {
+    if(Barricade.getInstance().isDisabled()) {
+      Toast.makeText(MainActivity.this,R.string.remote_response, Toast.LENGTH_SHORT).show();
+    }
+    else {
+      Toast.makeText(MainActivity.this,R.string.barricade_response, Toast.LENGTH_SHORT).show();
+    }
   }
 
   private void initRetrofit() {
