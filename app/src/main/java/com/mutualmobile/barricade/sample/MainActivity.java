@@ -1,6 +1,5 @@
 package com.mutualmobile.barricade.sample;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -18,7 +17,6 @@ import com.mutualmobile.barricade.BarricadeInterceptor;
 import com.mutualmobile.barricade.sample.api.GitHubApiService;
 import com.mutualmobile.barricade.sample.api.model.Joke;
 import com.mutualmobile.barricade.sample.api.model.Repo;
-import java.util.ArrayList;
 import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
