@@ -45,6 +45,14 @@
         />
   </LinearLayout>
 
+  <ProgressBar
+      android:id="@+id/progress_bar"
+      android:layout_width="match_parent"
+      android:layout_height="10dp"
+      style="?android:attr/progressBarStyleHorizontal"
+      android:indeterminate="true"
+      android:visibility="invisible"/>
+
   <android.support.v7.widget.RecyclerView
       android:id="@+id/repo_list"
       android:layout_width="match_parent"

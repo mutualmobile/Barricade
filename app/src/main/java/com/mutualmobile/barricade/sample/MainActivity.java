@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
   private final String TAG = "BARRICADE_SAMPLE";
   private GitHubApiService gitHubApiService;
-  private ProgressDialog progressDialog;
+  private ProgressBar progressBar;
 
   private TextView jokeTextView;
   private CardView cardInfo;
@@ -42,11 +43,10 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    progressDialog = new ProgressDialog(this);
-    progressDialog.setMessage("Fetching Data");
-
     initRetrofit();
     initRecyclerView();
+
+    progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
     Switch barricadeSwitch = (Switch) findViewById(R.id.switch1);
     checkChanged(barricadeSwitch.isChecked());
@@ -104,14 +104,11 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void showProgress(boolean show) {
-    if (progressDialog == null) {
-      return;
-    }
 
     if (show) {
-      progressDialog.show();
+      progressBar.setVisibility(View.VISIBLE);
     } else {
-      progressDialog.dismiss();
+      progressBar.setVisibility(View.INVISIBLE);
     }
   }
 
