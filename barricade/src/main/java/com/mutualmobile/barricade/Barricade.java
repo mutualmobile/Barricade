@@ -2,8 +2,6 @@ package com.mutualmobile.barricade;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
-import android.util.Log;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
@@ -79,7 +77,7 @@ public class Barricade {
       this(barricadeConfig, new AndroidAssetFileManager(context));
     }
 
-    private Builder(IBarricadeConfig barricadeConfig, AssetFileManager fileManager) {
+    public Builder(IBarricadeConfig barricadeConfig, AssetFileManager fileManager) {
       this.barricadeConfig = barricadeConfig;
       this.fileManager = fileManager;
     }

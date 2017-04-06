@@ -21,9 +21,9 @@ public class AndroidAssetFileManager implements AssetFileManager {
     mApplicationContext = applicationContext;
   }
 
-  public String getContentsOfFileAsString(String fqFileName) {
+  public String getContentsOfFileAsString(String fileName) {
     try {
-      InputStream is = getContentsOfFileAsStream(fqFileName);
+      InputStream is = getContentsOfFileAsStream(fileName);
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
       int aByte = is.read();
       while (aByte != -1) {
@@ -37,23 +37,13 @@ public class AndroidAssetFileManager implements AssetFileManager {
     return null;
   }
 
-  @Override public InputStream getContentsOfFileAsStream(String fqFileName) {
+  @Override public InputStream getContentsOfFileAsStream(String fileName) {
     try {
-      return mApplicationContext.getAssets().open(String.format("%s", fqFileName));
+      return mApplicationContext.getAssets().open(String.format("%s", fileName));
     } catch (IOException e) {
       Logger.getLogger(TAG).severe(e.getMessage());
     }
     return null;
-  }
-
-  @Override public String[] getAllSubdirectories(String directoryName) {
-    String[] directories = new String[0];
-    try {
-      directories = mApplicationContext.getAssets().list(directoryName);
-    } catch (IOException e) {
-      Logger.getLogger(TAG).severe(e.getMessage());
-    }
-    return directories;
   }
 }
 
