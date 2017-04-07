@@ -2,10 +2,6 @@ package com.mutualmobile.barricade.response;
 
 import com.mutualmobile.barricade.annotation.Response;
 
-/**
- * @author phaniraja.bhandari, 7/27/16.
- */
-
 public class BarricadeResponse {
   public int statusCode;
   public String responseFileName;

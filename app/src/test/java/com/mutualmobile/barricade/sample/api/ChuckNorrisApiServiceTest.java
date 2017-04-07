@@ -8,6 +8,7 @@ import com.mutualmobile.barricade.utils.TestAssetFileManager;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import retrofit2.Response;
@@ -26,6 +27,10 @@ public class ChuckNorrisApiServiceTest {
 
   @BeforeClass public static void setup() {
     barricade = new Barricade.Builder(BarricadeConfig.getInstance(), new TestAssetFileManager()).install();
+  }
+
+  @After public void teardown() {
+    barricade.reset();
   }
 
   @Test public void canFetchRandomJokeFromApi() throws IOException {
@@ -69,6 +74,7 @@ public class ChuckNorrisApiServiceTest {
     barricade.setEnabled(true).withResponse(BarricadeConfig.Endpoints.RANDOM, BarricadeConfig.Responses.Random.FAILURE);
     Response<Joke> response = getApiService().getRandomJoke().execute();
     assertThat(response.isSuccessful()).isFalse();
+    assertThat(response.code()).isEqualTo(401);
   }
 
   private ChuckNorrisApiService getApiService() {

@@ -49,8 +49,7 @@ public class Barricade {
   private Barricade() {
   }
 
-  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay,
-      Context context) {
+  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay, Context context) {
     this.barricadeConfig = barricadeConfig;
     this.fileManager = fileManager;
     this.delay = delay;
@@ -124,8 +123,7 @@ public class Barricade {
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode)
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
-        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType),
-            fileResponse.getBytes()))
+        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))
         .addHeader("content-type", barricadeResponse.contentType)
         .build();
   }
@@ -140,8 +138,7 @@ public class Barricade {
 
   @NonNull private String getResponseFromFile(String endpoint, String variant) {
     // TODO: 4/4/17 Check with other file formats other than JSON
-    String fileName =
-        ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
+    String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
     return fileManager.getContentsOfFileAsString(fileName);
   }
 
@@ -178,6 +175,17 @@ public class Barricade {
       return this;
     } else {
       throw new IllegalArgumentException(endPoint + " doesn't exist");
+    }
+  }
+
+  /**
+   * Resets any configuration changes done at run-time
+   */
+  public void reset() {
+    HashMap<String, BarricadeResponseSet> configs = getConfig();
+    for (String key : configs.keySet()) {
+      BarricadeResponseSet set = configs.get(key);
+      set.defaultIndex = set.originalDefaultIndex;
     }
   }
 }
