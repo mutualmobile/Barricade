@@ -1,0 +1,9 @@
+title: Barricade
+description: A better mock server
+show_downloads: false
+google_analytics: true
+theme: jekyll-theme-tactile
+github:
+  owner_name: Mutual Mobile
+  repository_name: Barricade
+  is_project_page: true
