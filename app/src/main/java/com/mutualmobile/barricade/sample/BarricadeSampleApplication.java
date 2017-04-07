@@ -7,6 +7,6 @@ import com.mutualmobile.barricade.BarricadeConfig;
 public class BarricadeSampleApplication extends Application {
   @Override public void onCreate() {
     super.onCreate();
-    new Barricade.Builder(this, new BarricadeConfig()).enableShakeToStart(this).install();
+    new Barricade.Builder(this, BarricadeConfig.getInstance()).enableShakeToStart(this).install();
   }
 }

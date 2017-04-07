@@ -25,11 +25,11 @@ public class ChuckNorrisApiServiceTest {
   private static Barricade barricade;
 
   @BeforeClass public static void setup() {
-    barricade = new Barricade.Builder(new BarricadeConfig(), new TestAssetFileManager()).install();
+    barricade = new Barricade.Builder(BarricadeConfig.getInstance(), new TestAssetFileManager()).install();
   }
 
   @Test public void canFetchRandomJokeFromApi() throws IOException {
-    barricade.disable();
+    barricade.setEnabled(false);
     Response<Joke> response = getApiService().getRandomJoke().execute();
 
     assertThat(response.isSuccessful()).isTrue();
@@ -46,7 +46,7 @@ public class ChuckNorrisApiServiceTest {
   }
 
   @Test public void canFetchRandomJokeFromBarricade() throws IOException {
-    barricade.enable();
+    barricade.setEnabled(true);
     Response<Joke> response = getApiService().getRandomJoke().execute();
 
     assertThat(response.isSuccessful()).isTrue();
@@ -65,14 +65,18 @@ public class ChuckNorrisApiServiceTest {
     assertThat(joke.iconUrl).isEqualTo("https://assets.chucknorris.host/img/avatar/chuck-norris.png");
   }
 
+  @Test public void canSetBarricadeResponseAtRunTime() throws IOException {
+    barricade.setEnabled(true).withResponse(BarricadeConfig.Endpoints.RANDOM, BarricadeConfig.Responses.Random.FAILURE);
+    Response<Joke> response = getApiService().getRandomJoke().execute();
+    assertThat(response.isSuccessful()).isFalse();
+  }
+
   private ChuckNorrisApiService getApiService() {
     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
     OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor()).addInterceptor(httpLoggingInterceptor).build();
-
     Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
-
     return retrofit.create(ChuckNorrisApiService.class);
   }
 }

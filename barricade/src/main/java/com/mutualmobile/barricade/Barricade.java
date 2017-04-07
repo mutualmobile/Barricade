@@ -33,7 +33,7 @@ public class Barricade {
   private AssetFileManager fileManager;
   private long delay = DEFAULT_DELAY;
 
-  private boolean disabled = false;
+  private boolean enabled = false;
 
   /**
    * @return The singleton instance of the Barricade
@@ -60,8 +60,8 @@ public class Barricade {
     }
   }
 
-  public boolean isDisabled() {
-    return disabled;
+  boolean isEnabled() {
+    return enabled;
   }
 
   /**
@@ -148,18 +148,8 @@ public class Barricade {
   /**
    * Enable Barricade
    */
-  public Barricade enable() {
-    Logger.getLogger(TAG).info("Barricade enabled.");
-    this.disabled = false;
-    return this;
-  }
-
-  /**
-   * Disable Barricade
-   */
-  public Barricade disable() {
-    Logger.getLogger(TAG).info("Barricade disabled.");
-    this.disabled = true;
+  public Barricade setEnabled(boolean enabled) {
+    this.enabled = enabled;
     return this;
   }
 
