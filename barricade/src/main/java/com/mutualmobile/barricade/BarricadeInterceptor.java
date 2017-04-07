@@ -17,27 +17,25 @@ public class BarricadeInterceptor implements Interceptor {
   private Barricade barricade = Barricade.getInstance();
 
   @Override public Response intercept(Chain chain) throws IOException {
-    if (barricade.isDisabled()) {
-      return chain.proceed(chain.request());
-    }
+    if (barricade.isEnabled()) {
+      Request request = chain.request();
+      List<String> pathSegments = request.url().pathSegments();
+      String endpoint = pathSegments.get(pathSegments.size() - 1);
 
-    Request request = chain.request();
-
-    List<String> pathSegments = request.url().pathSegments();
-    String endpoint = pathSegments.get(pathSegments.size() - 1);
-
-    Response response = barricade.getResponse(chain, endpoint);
-    if (response != null) {
-      Logger.getLogger(Barricade.TAG).info("You shall not pass!");
-      try {
-        Thread.sleep(barricade.getDelay());
-      } catch (InterruptedException e) {
-        Logger.getLogger(Barricade.TAG).severe(e.getMessage());
+      Response response = barricade.getResponse(chain, endpoint);
+      if (response != null) {
+        try {
+          Thread.sleep(barricade.getDelay());
+        } catch (InterruptedException e) {
+          Logger.getLogger(Barricade.TAG).severe(e.getMessage());
+        }
+        return response;
+      } else {
+        Logger.getLogger(Barricade.TAG).severe("No response found, making actual request");
+        return chain.proceed(request);
       }
-      return response;
     } else {
-      Logger.getLogger(Barricade.TAG).severe("No response found, making actual request");
-      return chain.proceed(request);
+      return chain.proceed(chain.request());
     }
   }
 }
