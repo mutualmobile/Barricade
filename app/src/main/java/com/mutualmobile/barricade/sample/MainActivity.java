@@ -2,22 +2,16 @@ package com.mutualmobile.barricade.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.mutualmobile.barricade.Barricade;
 import com.mutualmobile.barricade.BarricadeInterceptor;
-import com.mutualmobile.barricade.sample.api.GitHubApiService;
+import com.mutualmobile.barricade.sample.api.ChuckNorrisApiService;
 import com.mutualmobile.barricade.sample.api.model.Joke;
-import com.mutualmobile.barricade.sample.api.model.Repo;
-import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -29,85 +23,56 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
   private final String TAG = "BARRICADE_SAMPLE";
-  private GitHubApiService gitHubApiService;
+  private ChuckNorrisApiService chuckNorrisApiService;
   private ProgressBar progressBar;
-
   private TextView jokeTextView;
-  private CardView cardInfo;
-  private RecyclerView repoListView;
-  private RepoListAdapter repoListAdapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
+    initUi();
     initRetrofit();
-    initRecyclerView();
+  }
 
-    progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
+  private void initUi() {
     Switch barricadeSwitch = (Switch) findViewById(R.id.switch1);
     checkChanged(barricadeSwitch.isChecked());
-
     barricadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         checkChanged(isChecked);
       }
     });
 
-    jokeTextView = (TextView) findViewById(R.id.joke_text);
-    cardInfo = (CardView) findViewById(R.id.card_info);
-
-    findViewById(R.id.get_repos_button).setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        showInfoToast();
-        showProgress(true);
-        gitHubApiService.getUserRepos("google").enqueue(new Callback<List<Repo>>() {
-          @Override public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-            Log.d(MainActivity.class.getCanonicalName(), "Got : " + response.body().size());
-            showRepoList(response.body());
-            showProgress(false);
-          }
-
-          @Override public void onFailure(Call<List<Repo>> call, Throwable t) {
-            Log.e(TAG, "(╯°□°)╯︵ ┻━┻", t);
-            showProgress(false);
-          }
-        });
-      }
-    });
-
+    progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     findViewById(R.id.get_joke_button).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        showInfoToast();
-        showProgress(true);
-        gitHubApiService.getRandomChuckNorrisJoke().enqueue(new Callback<Joke>() {
-          @Override public void onResponse(Call<Joke> call, Response<Joke> response) {
-            if(response.isSuccessful()) {
-              showJoke(response.body().value);
-            }
-            else {
-              Log.e(TAG,"UnSuccessful Status Code Response: "+response.code());
-            }
-            showProgress(false);
-          }
+        onJokeButtonClicked();
+      }
+    });
+    jokeTextView = (TextView) findViewById(R.id.joke_text);
+  }
 
-          @Override public void onFailure(Call<Joke> call, Throwable t) {
-            Log.e(TAG, "(╯°□°)╯︵ ┻━┻", t);
-            showProgress(false);
-          }
-        });
+  private void onJokeButtonClicked() {
+    showProgress(true);
+    chuckNorrisApiService.getRandomJoke().enqueue(new Callback<Joke>() {
+      @Override public void onResponse(Call<Joke> call, Response<Joke> response) {
+        if (response.isSuccessful()) {
+          jokeTextView.setText(response.body().value);
+        } else {
+          Log.e(TAG, "Request failed : " + response.code());
+        }
+        showProgress(false);
+      }
+
+      @Override public void onFailure(Call<Joke> call, Throwable t) {
+        Log.e(TAG, "(╯°□°)╯︵ ┻━┻", t);
+        showProgress(false);
       }
     });
   }
 
   private void showProgress(boolean show) {
-
-    if (show) {
-      progressBar.setVisibility(View.VISIBLE);
-    } else {
-      progressBar.setVisibility(View.INVISIBLE);
-    }
+    progressBar.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
   }
 
   private void checkChanged(boolean isChecked) {
@@ -118,48 +83,15 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  private void showRepoList(List<Repo> repoList) {
-    cardInfo.setVisibility(View.GONE);
-    repoListView.setVisibility(View.VISIBLE);
-    repoListAdapter.setRepoList(repoList);
-  }
-
-  private void showJoke(String joke) {
-    repoListView.setVisibility(View.GONE);
-    cardInfo.setVisibility(View.VISIBLE);
-    jokeTextView.setText(joke);
-  }
-
-  private void showInfoToast() {
-    if(Barricade.getInstance().isDisabled()) {
-      Toast.makeText(MainActivity.this,R.string.remote_response, Toast.LENGTH_SHORT).show();
-    }
-    else {
-      Toast.makeText(MainActivity.this,R.string.barricade_response, Toast.LENGTH_SHORT).show();
-    }
-  }
-
   private void initRetrofit() {
     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    OkHttpClient okHttpClient =
-        new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor())
-            .addInterceptor(httpLoggingInterceptor)
-            .build();
+    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor()).addInterceptor(httpLoggingInterceptor).build();
 
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.github.com")
-        .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build();
+    Retrofit retrofit =
+        new Retrofit.Builder().baseUrl("https://api.chucknorris.io").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
 
-    gitHubApiService = retrofit.create(GitHubApiService.class);
-  }
-
-  private void initRecyclerView() {
-    repoListView = (RecyclerView) findViewById(R.id.repo_list);
-    repoListView.setLayoutManager(new LinearLayoutManager(this));
-    repoListAdapter = new RepoListAdapter();
-    repoListView.setAdapter(repoListAdapter);
+    chuckNorrisApiService = retrofit.create(ChuckNorrisApiService.class);
   }
 }
