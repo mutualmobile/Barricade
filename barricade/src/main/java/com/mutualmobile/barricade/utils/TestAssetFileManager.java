@@ -9,6 +9,7 @@ import java.io.InputStream;
 public class TestAssetFileManager implements AssetFileManager {
 
   private static final String PATH_TO_DATA = "app/src/main/assets";
+  private static final String PATH_TO_DATA_2 = "src/main/assets";
 
   @Override public String getContentsOfFileAsString(String fileName) {
     InputStream fos = null;
@@ -34,6 +35,9 @@ public class TestAssetFileManager implements AssetFileManager {
 
   @Override public InputStream getContentsOfFileAsStream(String fileName) {
     File file = new File(String.format("%s/%s", PATH_TO_DATA, fileName));
+    if(!file.exists()) {
+      file = new File(String.format("%s/%s", PATH_TO_DATA_2, fileName));
+    }
     InputStream fos = null;
     try {
       fos = new FileInputStream(file);
