@@ -8,3 +8,9 @@ android:
     - extra-android-m2repository
 script:
     - ./gradlew clean assemble test
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    on:
+      branch: master
