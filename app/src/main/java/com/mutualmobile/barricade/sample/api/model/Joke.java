@@ -1,8 +1,12 @@
 package com.mutualmobile.barricade.sample.api.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Joke {
   public String id;
   public String value;
+  @SerializedName("icon_url")
+  public String iconUrl;
 
   @Override public String toString() {
     return "Joke{\n"

@@ -1,9 +1,6 @@
 package com.mutualmobile.barricade;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
-import android.util.Log;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
@@ -35,7 +32,7 @@ public class Barricade {
   private AssetFileManager fileManager;
   private long delay = DEFAULT_DELAY;
 
-  private boolean disabled = false;
+  private boolean enabled = false;
 
   /**
    * @return The singleton instance of the Barricade
@@ -51,8 +48,7 @@ public class Barricade {
   private Barricade() {
   }
 
-  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay,
-      Context context) {
+  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay, Context context) {
     this.barricadeConfig = barricadeConfig;
     this.fileManager = fileManager;
     this.delay = delay;
@@ -62,8 +58,8 @@ public class Barricade {
     }
   }
 
-  public boolean isDisabled() {
-    return disabled;
+  boolean isEnabled() {
+    return enabled;
   }
 
   /**
@@ -79,7 +75,7 @@ public class Barricade {
       this(barricadeConfig, new AndroidAssetFileManager(context));
     }
 
-    private Builder(IBarricadeConfig barricadeConfig, AssetFileManager fileManager) {
+    public Builder(IBarricadeConfig barricadeConfig, AssetFileManager fileManager) {
       this.barricadeConfig = barricadeConfig;
       this.fileManager = fileManager;
     }
@@ -126,8 +122,7 @@ public class Barricade {
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode)
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
-        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType),
-            fileResponse.getBytes()))
+        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))
         .addHeader("content-type", barricadeResponse.contentType)
         .build();
   }
@@ -140,28 +135,19 @@ public class Barricade {
     return delay;
   }
 
-  @NonNull private String getResponseFromFile(String endpoint, String variant) {
+  private String getResponseFromFile(String endpoint, String variant) {
     // TODO: 4/4/17 Check with other file formats other than JSON
-    String fileName =
-        ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
+    String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
     return fileManager.getContentsOfFileAsString(fileName);
   }
 
   /**
-   * Enable Barricade
+   * Change Barricade status
+   *
+   * @param enabled true to enable, false otherwise
    */
-  public Barricade enable() {
-    Logger.getLogger(TAG).info("Barricade enabled.");
-    this.disabled = false;
-    return this;
-  }
-
-  /**
-   * Disable Barricade
-   */
-  public Barricade disable() {
-    Logger.getLogger(TAG).info("Barricade disabled.");
-    this.disabled = true;
+  public Barricade setEnabled(boolean enabled) {
+    this.enabled = enabled;
     return this;
   }
 
@@ -190,6 +176,17 @@ public class Barricade {
       return this;
     } else {
       throw new IllegalArgumentException(endPoint + " doesn't exist");
+    }
+  }
+
+  /**
+   * Resets any configuration changes done at run-time
+   */
+  public void reset() {
+    HashMap<String, BarricadeResponseSet> configs = getConfig();
+    for (String key : configs.keySet()) {
+      BarricadeResponseSet set = configs.get(key);
+      set.defaultIndex = set.originalDefaultIndex;
     }
   }
 }
