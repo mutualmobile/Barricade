@@ -8,7 +8,7 @@
         android:name="com.mutualmobile.barricade.activity.BarricadeActivity"
         android:label="@string/title_activity"
         android:launchMode="singleInstance"
-        android:theme="@style/Theme.Barricade"/>
+        />
   </application>
 
 </manifest>
