@@ -1,86 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.mutualmobile.barricade.sample.MainActivity"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  tools:context="com.mutualmobile.barricade.sample.MainActivity">
+
   <Switch
-      android:id="@+id/switch1"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:checked="false"
-      android:text="Barricade"
-      android:textSize="15sp"
-      android:paddingLeft="@dimen/activity_horizontal_margin"
-      android:paddingRight="@dimen/activity_horizontal_margin"
-      />
+    android:id="@+id/switch1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:checked="false"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:text="@string/barricade"
+    android:textSize="15sp" />
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="12dp"
-      android:gravity="center"
-      >
-    <Button
-        android:id="@+id/get_repos_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_repos"
-        android:textSize="12sp"
-        android:textAllCaps="false"
-        />
-
-    <Button
-        android:id="@+id/get_joke_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_joke"
-        android:textSize="12sp"
-        android:textAllCaps="false"
-        />
-  </LinearLayout>
+  <Button
+    android:id="@+id/get_joke_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="12dp"
+    android:text="@string/get_joke"
+    android:textAllCaps="false"
+    android:textSize="12sp" />
 
   <ProgressBar
-      android:id="@+id/progress_bar"
-      android:layout_width="match_parent"
-      android:layout_height="10dp"
-      style="?android:attr/progressBarStyleHorizontal"
-      android:indeterminate="true"
-      android:visibility="invisible"/>
+    android:id="@+id/progress_bar"
+    style="?android:attr/progressBarStyleHorizontal"
+    android:layout_width="match_parent"
+    android:layout_height="10dp"
+    android:indeterminate="true"
+    android:visibility="invisible" />
 
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/repo_list"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="5dp"
-      android:visibility="gone"
-      />
-
-  <android.support.v7.widget.CardView
-      android:orientation="horizontal"
-      android:id="@+id/card_info"
-      android:paddingLeft="@dimen/activity_horizontal_margin"
-      android:paddingRight="@dimen/activity_horizontal_margin"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="28dp"
-      android:layout_marginRight="8dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginBottom="4dp"
-      card_view:cardCornerRadius="4dp"
-      android:visibility="gone">
-
-    <TextView
-        android:id="@+id/joke_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"/>
-  </android.support.v7.widget.CardView>
+  <TextView
+    android:id="@+id/joke_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    android:textSize="18sp"
+    tools:text="-funny joke here-"/>
 </LinearLayout>
