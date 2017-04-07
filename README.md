@@ -31,7 +31,7 @@ Include the following dependencies in your app's build.gradle :
 ```
 dependencies {
     compile 'com.mutualmobile:barricade:0.1.0'
-    apt 'com.mutualmobile:barricade-compiler:0.1.0'
+    annotationProcessor 'com.mutualmobile:barricade-compiler:0.1.0'
 }
 ```
 
