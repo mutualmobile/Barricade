@@ -193,7 +193,7 @@ public class Barricade {
   }
 
   /**
-   * Returns an intent that can be used to launch the Barricade configuration UI
+   * Launches the Barricade configuration UI
    *
    * @param context Activity context
    */
