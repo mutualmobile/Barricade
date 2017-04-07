@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * Integration test for the API with and without Barricade
+ * Integration tests for the API with and without Barricade
  */
 public class ChuckNorrisApiServiceTest {
 
@@ -41,6 +41,28 @@ public class ChuckNorrisApiServiceTest {
     assertThat(joke.id).isNotEmpty();
     assertThat(joke.value).isNotNull();
     assertThat(joke.value).isNotEmpty();
+    assertThat(joke.iconUrl).isNotNull();
+    assertThat(joke.iconUrl).isNotEmpty();
+  }
+
+  @Test public void canFetchRandomJokeFromBarricade() throws IOException {
+    barricade.enable();
+    Response<Joke> response = getApiService().getRandomJoke().execute();
+
+    assertThat(response.isSuccessful()).isTrue();
+    assertThat(response.code()).isEqualTo(200);
+    assertThat(response.body()).isNotNull();
+
+    Joke joke = response.body();
+    assertThat(joke.id).isNotNull();
+    assertThat(joke.id).isNotEmpty();
+    assertThat(joke.id).isEqualTo("gX6RQU9EQxC4oZd6kVeiSw");
+    assertThat(joke.value).isNotNull();
+    assertThat(joke.value).isNotEmpty();
+    assertThat(joke.value).isEqualTo("Gordon Ramsay features Chuck Norris' Toaster Strudel recipe in all of his restaurants.");
+    assertThat(joke.iconUrl).isNotNull();
+    assertThat(joke.iconUrl).isNotEmpty();
+    assertThat(joke.iconUrl).isEqualTo("https://assets.chucknorris.host/img/avatar/chuck-norris.png");
   }
 
   private ChuckNorrisApiService getApiService() {

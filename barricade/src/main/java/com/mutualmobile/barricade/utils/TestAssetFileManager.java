@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class TestAssetFileManager implements AssetFileManager {
 
-  private static final String PATH_TO_DATA = "src/main/assets";
+  private static final String PATH_TO_DATA = "app/src/main/assets";
 
   @Override public String getContentsOfFileAsString(String fileName) {
     InputStream fos = null;

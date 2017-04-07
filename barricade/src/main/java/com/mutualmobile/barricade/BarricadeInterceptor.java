@@ -28,7 +28,6 @@ public class BarricadeInterceptor implements Interceptor {
 
     Response response = barricade.getResponse(chain, endpoint);
     if (response != null) {
-      Logger.getLogger(Barricade.TAG).info("You shall not pass!");
       try {
         Thread.sleep(barricade.getDelay());
       } catch (InterruptedException e) {
