@@ -1,7 +1,6 @@
 package com.mutualmobile.barricade;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
@@ -136,14 +135,16 @@ public class Barricade {
     return delay;
   }
 
-  @NonNull private String getResponseFromFile(String endpoint, String variant) {
+  private String getResponseFromFile(String endpoint, String variant) {
     // TODO: 4/4/17 Check with other file formats other than JSON
     String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
     return fileManager.getContentsOfFileAsString(fileName);
   }
 
   /**
-   * Enable Barricade
+   * Change Barricade status
+   *
+   * @param enabled true to enable, false otherwise
    */
   public Barricade setEnabled(boolean enabled) {
     this.enabled = enabled;
