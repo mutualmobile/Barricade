@@ -2,11 +2,15 @@
 layout: default
 ---
 
+<br/>
+
 # Barricade
 
 [![Build Status](https://travis-ci.org/mutualmobile/Barricade.svg)](https://travis-ci.org/mutualmobile/Barricade)
 [![Version](https://api.bintray.com/packages/mutualmobile/Android/barricade/images/download.svg)](https://bintray.com/mutualmobile/Android/barricade)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.mutualmobile/barricade/badge.svg)](http://www.javadoc.io/doc/com.mutualmobile/barricade)
+
+<hr>
 
 Barricade is a library for Android apps that allows you to get responses to API requests locally by running a local server. Barricade will intercept your API calls using an OkHttp Network Interceptor and can provide a local response from a local file.
 
