@@ -1,28 +1,34 @@
 package com.mutualmobile.barricade.utils;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import com.mutualmobile.barricade.activity.BarricadeActivity;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-public class BarricadeShakeListener implements SensorEventListener {
-  private Context mContext;
+public class BarricadeShakeListener
+    implements SensorEventListener, Application.ActivityLifecycleCallbacks {
+
+  private final Application application;
   private static final int SHAKE_THRESHOLD = 1200;
   private long lastUpdate = 0;
   private float lastX, lastY, lastZ;
 
   private int shakeCount = 0;
+  private int activityCount = 0;
+  private SensorManager sensorManager;
 
-  public BarricadeShakeListener(Context context) {
-    mContext = context;
-    SensorManager sensorManager = (SensorManager) mContext.getSystemService(SENSOR_SERVICE);
-    sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-        SensorManager.SENSOR_DELAY_GAME);
+  public BarricadeShakeListener(Application application) {
+    this.application = application;
+    this.sensorManager = (SensorManager) application.getSystemService(SENSOR_SERVICE);
+
+    application.registerActivityLifecycleCallbacks(this);
   }
 
   @Override public void onSensorChanged(SensorEvent sensorEvent) {
@@ -45,9 +51,9 @@ public class BarricadeShakeListener implements SensorEventListener {
       }
       if (shakeCount >= 2) {
         shakeCount = 0;
-        Intent intent = new Intent(mContext, BarricadeActivity.class);
+        Intent intent = new Intent(application, BarricadeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        application.startActivity(intent);
       }
       lastX = x;
       lastY = y;
@@ -55,7 +61,52 @@ public class BarricadeShakeListener implements SensorEventListener {
     }
   }
 
+  private void enableShakeListener() {
+    sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        SensorManager.SENSOR_DELAY_GAME);
+  }
+
+  private void disableShakeListener() {
+    sensorManager.unregisterListener(this);
+  }
+
   @Override public void onAccuracyChanged(Sensor sensor, int i) {
+
+  }
+
+  @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+  }
+
+  @Override public void onActivityStarted(Activity activity) {
+    if (activityCount == 0) {
+      enableShakeListener();
+    }
+
+    activityCount++;
+  }
+
+  @Override public void onActivityResumed(Activity activity) {
+
+  }
+
+  @Override public void onActivityPaused(Activity activity) {
+
+  }
+
+  @Override public void onActivityStopped(Activity activity) {
+    activityCount--;
+    if (activityCount <= 0) {
+      activityCount = 0;
+      disableShakeListener();
+    }
+  }
+
+  @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+  }
+
+  @Override public void onActivityDestroyed(Activity activity) {
 
   }
 }
