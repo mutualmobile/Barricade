@@ -7,7 +7,7 @@ android:
     - android-25
     - extra-android-m2repository
 script:
-    - ./gradlew clean assemble
+    - ./gradlew clean assemble test
 deploy:
     provider: pages
     skip_cleanup: true

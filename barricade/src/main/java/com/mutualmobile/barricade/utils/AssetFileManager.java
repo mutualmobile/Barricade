@@ -14,10 +14,9 @@ import java.io.InputStream;
  */
 public interface AssetFileManager {
 
-  String getContentsOfFileAsString(String fqFileName);
+  String getContentsOfFileAsString(String fileName);
 
-  InputStream getContentsOfFileAsStream(String fqFileName);
+  InputStream getContentsOfFileAsStream(String fileName);
 
-  String[] getAllSubdirectories(String directoryName);
 }
 

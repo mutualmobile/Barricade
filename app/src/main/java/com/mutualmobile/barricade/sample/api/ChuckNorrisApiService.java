@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 public interface ChuckNorrisApiService {
 
   @GET("/jokes/random") @Barricade(endpoint = "random", responses = {
-      @Response(fileName = "success", isDefault = true), @Response(fileName = "failure")
+      @Response(fileName = "success", isDefault = true),
+      @Response(fileName = "failure", statusCode = 401)
   }) Call<Joke> getRandomJoke();
 }
