@@ -17,7 +17,7 @@ at runtime.
 
 **Barricade is currently in beta and works only with Retrofit-OkHttp at the moment.**
 
-<p align="center"><img src="https://github.com/mutualmobile/Barricade/blob/master/art/In_action.gif" width="288" height="512"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/mutualmobile/Barricade/master/art/In_action.gif" width="288" height="512"></p>
 
 ## When to use
 
