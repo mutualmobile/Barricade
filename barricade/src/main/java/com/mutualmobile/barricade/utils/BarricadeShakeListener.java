@@ -1,12 +1,11 @@
 package com.mutualmobile.barricade.utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import com.mutualmobile.barricade.activity.BarricadeActivity;
+import com.mutualmobile.barricade.Barricade;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -21,8 +20,7 @@ public class BarricadeShakeListener implements SensorEventListener {
   public BarricadeShakeListener(Context context) {
     mContext = context;
     SensorManager sensorManager = (SensorManager) mContext.getSystemService(SENSOR_SERVICE);
-    sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-        SensorManager.SENSOR_DELAY_GAME);
+    sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
   }
 
   @Override public void onSensorChanged(SensorEvent sensorEvent) {
@@ -45,9 +43,7 @@ public class BarricadeShakeListener implements SensorEventListener {
       }
       if (shakeCount >= 2) {
         shakeCount = 0;
-        Intent intent = new Intent(mContext, BarricadeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        Barricade.getInstance().launchConfigActivity(mContext);
       }
       lastX = x;
       lastY = y;

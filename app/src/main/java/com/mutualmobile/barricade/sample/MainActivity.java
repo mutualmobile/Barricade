@@ -3,6 +3,9 @@ package com.mutualmobile.barricade.sample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
@@ -34,6 +37,20 @@ public class MainActivity extends AppCompatActivity {
     initRetrofit();
   }
 
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_main, menu);
+    return true;
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if(item.getItemId() == R.id.config) {
+      Barricade.getInstance().launchConfigActivity(this);
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
   private void initUi() {
     Switch barricadeSwitch = (Switch) findViewById(R.id.switch1);
     checkChanged(barricadeSwitch.isChecked());
@@ -59,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if (response.isSuccessful()) {
           jokeTextView.setText(response.body().value);
         } else {
-          Log.e(TAG, "Request failed : " + response.code());
+          jokeTextView.setText("Request failed : " + response.code());
         }
         showProgress(false);
       }

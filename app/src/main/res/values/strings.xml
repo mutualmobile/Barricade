@@ -5,4 +5,5 @@
   <string name="get_repos">Get Github Repos</string>
   <string name="get_joke">Get Joke</string>
   <string name="barricade">Barricade</string>
+  <string name="menu_config_label">Configuration</string>
 </resources>
