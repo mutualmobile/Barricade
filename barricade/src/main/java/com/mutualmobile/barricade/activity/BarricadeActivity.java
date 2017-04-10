@@ -123,17 +123,20 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void showResetDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setMessage(getString(R.string.reset_message))
+    new AlertDialog.Builder(this).setMessage(getString(R.string.reset_message))
         .setCancelable(true)
-        .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
           @Override public void onClick(DialogInterface dialogInterface, int i) {
             Barricade.getInstance().reset();
             endpointsRVAdapter.notifyDataSetChanged();
           }
         })
-        .create();
-    AlertDialog alert = builder.create();
-    alert.show();
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+
+          }
+        })
+        .create()
+        .show();
   }
 }

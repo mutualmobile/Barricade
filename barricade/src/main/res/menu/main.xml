@@ -9,7 +9,7 @@
 
   <item
       android:id="@+id/menu_reset"
-      android:icon="@drawable/ic_reset"
+      android:icon="@drawable/ic_undo"
       app:showAsAction="ifRoom"
-      android:title="@string/menu_delay"/>
+      android:title="@string/menu_reset"/>
 </menu>
