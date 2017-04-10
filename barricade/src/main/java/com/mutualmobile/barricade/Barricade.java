@@ -1,6 +1,8 @@
 package com.mutualmobile.barricade;
 
 import android.content.Context;
+import android.content.Intent;
+import com.mutualmobile.barricade.activity.BarricadeActivity;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
@@ -189,5 +191,16 @@ public class Barricade {
       set.defaultIndex = set.originalDefaultIndex;
     }
     this.delay = DEFAULT_DELAY;
+  }
+
+  /**
+   * Launches the Barricade configuration UI
+   *
+   * @param context Activity context
+   */
+  public void launchConfigActivity(Context context) {
+    Intent intent = new Intent(context, BarricadeActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
   }
 }
