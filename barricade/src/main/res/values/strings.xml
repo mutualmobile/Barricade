@@ -2,8 +2,11 @@
   <string name="app_name">Barricade</string>
   <string name="title_activity">Barricade Config</string>
   <string name="menu_delay">Delay</string>
+  <string name="menu_reset">Reset</string>
   <string name="global_delay_ms">Global delay (ms)</string>
   <string name="title_edit_global_delay">Edit global delay (ms)</string>
   <string name="required">Required</string>
   <string name="updated">Updated</string>
+  <string name="reset_message">Are You sure you want to reset settings?</string>
+  <string name="ok">Ok</string>
 </resources>
