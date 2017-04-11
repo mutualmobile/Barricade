@@ -52,7 +52,7 @@ final class CodeGenerator {
    * @param messager Messager to print logs
    * @throws IOException
    */
-  public static void generateClass(ProcessingEnvironment processingEnv,
+  static void generateClass(ProcessingEnvironment processingEnv,
       HashMap<String, BarricadeResponseSet> configs, Messager messager) throws IOException {
 
     messager.printMessage(Diagnostic.Kind.NOTE, "Generating configuration code...");
