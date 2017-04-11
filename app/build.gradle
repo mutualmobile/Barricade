@@ -22,6 +22,7 @@ android {
     targetSdkVersion 25
     versionCode 1
     versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
     release {
@@ -45,4 +46,11 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
   testCompile 'com.google.truth:truth:0.31'
+
+  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+  androidTestCompile 'com.android.support.test:runner:0.5'
+  androidTestCompile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+
+  androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+  androidTestCompile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
 }

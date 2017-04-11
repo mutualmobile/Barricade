@@ -12,16 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.mutualmobile.barricade.Barricade;
-import com.mutualmobile.barricade.BarricadeInterceptor;
 import com.mutualmobile.barricade.sample.api.ChuckNorrisApiService;
 import com.mutualmobile.barricade.sample.api.model.Joke;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.mutualmobile.barricade.sample.api.util.ApiUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     initUi();
-    initRetrofit();
+    chuckNorrisApiService = ApiUtils.getApiService();
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void initUi() {
-    Switch barricadeSwitch = (Switch) findViewById(R.id.switch1);
+    Switch barricadeSwitch = (Switch) findViewById(R.id.barricade_switch);
     checkChanged(barricadeSwitch.isChecked());
     barricadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,15 +92,4 @@ public class MainActivity extends AppCompatActivity {
     Barricade.getInstance().setEnabled(isChecked);
   }
 
-  private void initRetrofit() {
-    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-    httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor()).addInterceptor(httpLoggingInterceptor).build();
-
-    Retrofit retrofit =
-        new Retrofit.Builder().baseUrl("https://api.chucknorris.io").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
-
-    chuckNorrisApiService = retrofit.create(ChuckNorrisApiService.class);
-  }
 }

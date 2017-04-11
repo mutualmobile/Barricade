@@ -174,7 +174,7 @@ public class Barricade {
    * @param defaultIndex The index of the response you want to get for endPoint. Use
    * BarricadeConfig$Responses to get responses for an endpoint instead of passing an int directly
    */
-  public Barricade withResponse(String endPoint, int defaultIndex) {
+  public Barricade setResponse(String endPoint, int defaultIndex) {
     if (getConfig().containsKey(endPoint)) {
       getConfig().get(endPoint).defaultIndex = defaultIndex;
       return this;
