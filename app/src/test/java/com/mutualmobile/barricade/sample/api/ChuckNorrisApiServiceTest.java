@@ -71,7 +71,7 @@ public class ChuckNorrisApiServiceTest {
   }
 
   @Test public void canSetBarricadeResponseAtRunTime() throws IOException {
-    barricade.setEnabled(true).withResponse(BarricadeConfig.Endpoints.RANDOM, BarricadeConfig.Responses.Random.FAILURE);
+    barricade.setEnabled(true).setResponse(BarricadeConfig.Endpoints.RANDOM, BarricadeConfig.Responses.Random.FAILURE);
     Response<Joke> response = getApiService().getRandomJoke().execute();
     assertThat(response.isSuccessful()).isFalse();
     assertThat(response.code()).isEqualTo(401);

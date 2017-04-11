@@ -51,4 +51,6 @@ dependencies {
   androidTestCompile 'com.android.support.test:runner:0.5'
   androidTestCompile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
 
+  androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+  androidTestCompile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
 }
