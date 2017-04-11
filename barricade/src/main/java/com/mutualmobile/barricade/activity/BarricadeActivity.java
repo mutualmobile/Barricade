@@ -1,8 +1,10 @@
 package com.mutualmobile.barricade.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -107,6 +109,9 @@ public class BarricadeActivity extends AppCompatActivity
     } else if (itemId == R.id.menu_delay) {
       showEditDialog();
       return true;
+    } else if (itemId == R.id.menu_reset) {
+      showResetDialog();
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }
@@ -115,5 +120,23 @@ public class BarricadeActivity extends AppCompatActivity
     FragmentManager fm = getSupportFragmentManager();
     EditGlobalDelayDialogFragment dialogFragment = new EditGlobalDelayDialogFragment();
     dialogFragment.show(fm, EditGlobalDelayDialogFragment.class.getName());
+  }
+
+  private void showResetDialog() {
+    new AlertDialog.Builder(this).setMessage(getString(R.string.reset_message))
+        .setCancelable(true)
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+            Barricade.getInstance().reset();
+            endpointsRVAdapter.notifyDataSetChanged();
+          }
+        })
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+
+          }
+        })
+        .create()
+        .show();
   }
 }

@@ -190,6 +190,7 @@ public class Barricade {
       BarricadeResponseSet set = configs.get(key);
       set.defaultIndex = set.originalDefaultIndex;
     }
+    this.delay = DEFAULT_DELAY;
   }
 
   /**
