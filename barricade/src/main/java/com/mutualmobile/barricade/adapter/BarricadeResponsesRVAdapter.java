@@ -12,8 +12,6 @@ import java.util.List;
 
 /**
  * RecyclerView Adapter for displaying responses for an endpoint.
- *
- * @author Harish on 29/07/16.
  */
 public class BarricadeResponsesRVAdapter
     extends RecyclerView.Adapter<BarricadeResponsesRVAdapter.BarricadeResponseViewHolder> {
@@ -57,12 +55,12 @@ public class BarricadeResponsesRVAdapter
     return barricadeResponses.size();
   }
 
-  public class BarricadeResponseViewHolder extends RecyclerView.ViewHolder {
+  class BarricadeResponseViewHolder extends RecyclerView.ViewHolder {
     TextView responseCodeText;
     TextView responseFileText;
     ImageView selectedIcon;
 
-    public BarricadeResponseViewHolder(View itemView) {
+    BarricadeResponseViewHolder(View itemView) {
       super(itemView);
       responseCodeText = (TextView) itemView.findViewById(R.id.response_code);
       responseFileText = (TextView) itemView.findViewById(R.id.response_file);

@@ -14,8 +14,6 @@ import com.mutualmobile.barricade.R;
 
 /**
  * Dialog Fragment to edit global delay value for Barricade
- *
- * @author Mustafa Ali, 27/08/16.
  */
 public class EditGlobalDelayDialogFragment extends AppCompatDialogFragment
     implements View.OnClickListener {
