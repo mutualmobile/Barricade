@@ -29,9 +29,9 @@ import static org.hamcrest.Matchers.not;
 
   @Rule public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
-  private static final String JOKE_FROM_BARRICADE = "Gordon Ramsay features Chuck Norris' Toaster Strudel recipe in all of his restaurants.";
+  private static final String JOKE_FROM_BARRICADE = "When Chuck Norris was a kid, he made his mom eat her vegetables";
 
-  @Before public void registerIdlingResource() {
+  @Before public void setup() {
     IdlingResource resource = OkHttp3IdlingResource.create("OkHttp", ApiUtils.getOkHttpClient());
     Espresso.registerIdlingResources(resource);
   }
