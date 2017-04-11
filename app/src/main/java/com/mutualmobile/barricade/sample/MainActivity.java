@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void initUi() {
-    Switch barricadeSwitch = (Switch) findViewById(R.id.switch1);
+    Switch barricadeSwitch = (Switch) findViewById(R.id.barricade_switch);
     checkChanged(barricadeSwitch.isChecked());
     barricadeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
