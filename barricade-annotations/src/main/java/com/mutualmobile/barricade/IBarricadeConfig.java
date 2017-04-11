@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 /**
  * Contract for a Barricade configuration
- *
- * @author phaniraja.bhandari, 7/27/16.
  */
 public interface IBarricadeConfig {
   HashMap<String, BarricadeResponseSet> getConfigs();

@@ -1,5 +1,8 @@
 package com.mutualmobile.barricade.compiler;
 
+/**
+ * Used to create proper class and variable names for BarricadeConfig based on response files
+ */
 class StringUtils {
   static String toCamelCase(String str) {
 

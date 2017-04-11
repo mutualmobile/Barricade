@@ -22,8 +22,6 @@ import okhttp3.ResponseBody;
  *
  * You should typically initialize it once, preferably in your Application class using Builder
  * class.
- *
- * @author Mustafa Ali, 12/07/16.
  */
 public class Barricade {
   static final String TAG = "Barricade";
