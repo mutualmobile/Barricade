@@ -11,8 +11,6 @@ import java.util.HashMap;
 
 /**
  * RecyclerView Adapter for displaying endpoints and their selected defaults.
- *
- * @author Harish on 29/07/16.
  */
 public class BarricadeEndpointsRVAdapter
     extends RecyclerView.Adapter<BarricadeEndpointsRVAdapter.BarricadeEndpointViewHolder> {

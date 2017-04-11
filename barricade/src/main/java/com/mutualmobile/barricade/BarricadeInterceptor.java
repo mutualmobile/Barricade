@@ -9,8 +9,6 @@ import okhttp3.Response;
 
 /**
  * OkHttp interceptor that maps all outgoing requests to their barricaded responses (if available)
- *
- * @author Mustafa Ali, 12/07/16.
  */
 public class BarricadeInterceptor implements Interceptor {
 

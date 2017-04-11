@@ -4,8 +4,6 @@ import java.util.List;
 
 /**
  * Contains all responses for a barricaded endpoint along with other metadata.
- *
- * @author Mustafa Ali, 26/08/16.
  */
 public class BarricadeResponseSet {
   public List<BarricadeResponse> responses;
