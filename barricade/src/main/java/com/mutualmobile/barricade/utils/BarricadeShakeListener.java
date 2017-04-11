@@ -2,13 +2,12 @@ package com.mutualmobile.barricade.utils;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import com.mutualmobile.barricade.activity.BarricadeActivity;
+import com.mutualmobile.barricade.Barricade;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -51,9 +50,7 @@ public class BarricadeShakeListener
       }
       if (shakeCount >= 2) {
         shakeCount = 0;
-        Intent intent = new Intent(application, BarricadeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        application.startActivity(intent);
+        Barricade.getInstance().launchConfigActivity(application);
       }
       lastX = x;
       lastY = y;

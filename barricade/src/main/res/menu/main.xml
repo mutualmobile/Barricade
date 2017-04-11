@@ -6,4 +6,10 @@
       android:icon="@drawable/ic_timer_white"
       app:showAsAction="ifRoom"
       android:title="@string/menu_delay"/>
+
+  <item
+      android:id="@+id/menu_reset"
+      android:icon="@drawable/ic_undo"
+      app:showAsAction="ifRoom"
+      android:title="@string/menu_reset"/>
 </menu>
