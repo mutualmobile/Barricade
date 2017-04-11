@@ -76,11 +76,11 @@ public class BarricadeShakeListener
   }
 
   @Override public void onActivityStarted(Activity activity) {
-    if (activityCount == 0) {
+    activityCount++;
+
+    if (activityCount == 1) {
       enableShakeListener();
     }
-
-    activityCount++;
   }
 
   @Override public void onActivityResumed(Activity activity) {
@@ -93,8 +93,8 @@ public class BarricadeShakeListener
 
   @Override public void onActivityStopped(Activity activity) {
     activityCount--;
-    if (activityCount <= 0) {
-      activityCount = 0;
+
+    if (activityCount == 0) {
       disableShakeListener();
     }
   }
