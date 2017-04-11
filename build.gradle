@@ -23,3 +23,8 @@ allprojects {
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
+
+ext {
+  OKHTTP_VERSION = "3.6.0"
+  SUPPORT_LIB_VERSION = "25.3.0"
+}

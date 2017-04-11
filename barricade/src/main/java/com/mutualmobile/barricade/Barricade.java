@@ -1,5 +1,6 @@
 package com.mutualmobile.barricade;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import com.mutualmobile.barricade.activity.BarricadeActivity;
@@ -50,13 +51,14 @@ public class Barricade {
   private Barricade() {
   }
 
-  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay, Context context) {
+  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay,
+      Application application) {
     this.barricadeConfig = barricadeConfig;
     this.fileManager = fileManager;
     this.delay = delay;
 
-    if (context != null) {
-      new BarricadeShakeListener(context);
+    if (application != null) {
+      new BarricadeShakeListener(application);
     }
   }
 
@@ -71,7 +73,7 @@ public class Barricade {
     private IBarricadeConfig barricadeConfig;
     private AssetFileManager fileManager;
     private long delay = DEFAULT_DELAY;
-    private Context context;
+    private Application application;
 
     public Builder(Context context, IBarricadeConfig barricadeConfig) {
       this(barricadeConfig, new AndroidAssetFileManager(context));
@@ -82,8 +84,8 @@ public class Barricade {
       this.fileManager = fileManager;
     }
 
-    public Builder enableShakeToStart(Context context) {
-      this.context = context;
+    public Builder enableShakeToStart(Application application) {
+      this.application = application;
       return this;
     }
 
@@ -100,7 +102,7 @@ public class Barricade {
      */
     public Barricade install() {
       if (instance == null) {
-        instance = new Barricade(fileManager, barricadeConfig, delay, context);
+        instance = new Barricade(fileManager, barricadeConfig, delay, application);
       } else {
         Logger.getLogger(TAG).info("Barricade already installed, install() will be ignored.");
       }
@@ -124,7 +126,8 @@ public class Barricade {
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode)
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
-        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))
+        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType),
+            fileResponse.getBytes()))
         .addHeader("content-type", barricadeResponse.contentType)
         .build();
   }
@@ -139,7 +142,8 @@ public class Barricade {
 
   private String getResponseFromFile(String endpoint, String variant) {
     // TODO: 4/4/17 Check with other file formats other than JSON
-    String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
+    String fileName =
+        ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
     return fileManager.getContentsOfFileAsString(fileName);
   }
 

@@ -1,26 +1,33 @@
 package com.mutualmobile.barricade.utils;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.Application;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import com.mutualmobile.barricade.Barricade;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-public class BarricadeShakeListener implements SensorEventListener {
-  private Context mContext;
+public class BarricadeShakeListener
+    implements SensorEventListener, Application.ActivityLifecycleCallbacks {
+
+  private final Application application;
   private static final int SHAKE_THRESHOLD = 1200;
   private long lastUpdate = 0;
   private float lastX, lastY, lastZ;
 
   private int shakeCount = 0;
+  private int activityCount = 0;
+  private SensorManager sensorManager;
 
-  public BarricadeShakeListener(Context context) {
-    mContext = context;
-    SensorManager sensorManager = (SensorManager) mContext.getSystemService(SENSOR_SERVICE);
-    sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+  public BarricadeShakeListener(Application application) {
+    this.application = application;
+    this.sensorManager = (SensorManager) application.getSystemService(SENSOR_SERVICE);
+
+    application.registerActivityLifecycleCallbacks(this);
   }
 
   @Override public void onSensorChanged(SensorEvent sensorEvent) {
@@ -43,7 +50,7 @@ public class BarricadeShakeListener implements SensorEventListener {
       }
       if (shakeCount >= 2) {
         shakeCount = 0;
-        Barricade.getInstance().launchConfigActivity(mContext);
+        Barricade.getInstance().launchConfigActivity(application);
       }
       lastX = x;
       lastY = y;
@@ -51,7 +58,52 @@ public class BarricadeShakeListener implements SensorEventListener {
     }
   }
 
+  private void enableShakeListener() {
+    sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        SensorManager.SENSOR_DELAY_GAME);
+  }
+
+  private void disableShakeListener() {
+    sensorManager.unregisterListener(this);
+  }
+
   @Override public void onAccuracyChanged(Sensor sensor, int i) {
+
+  }
+
+  @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+  }
+
+  @Override public void onActivityStarted(Activity activity) {
+    activityCount++;
+
+    if (activityCount == 1) {
+      enableShakeListener();
+    }
+  }
+
+  @Override public void onActivityResumed(Activity activity) {
+
+  }
+
+  @Override public void onActivityPaused(Activity activity) {
+
+  }
+
+  @Override public void onActivityStopped(Activity activity) {
+    activityCount--;
+
+    if (activityCount == 0) {
+      disableShakeListener();
+    }
+  }
+
+  @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+  }
+
+  @Override public void onActivityDestroyed(Activity activity) {
 
   }
 }
