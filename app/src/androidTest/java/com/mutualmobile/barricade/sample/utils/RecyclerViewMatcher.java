@@ -1,4 +1,4 @@
-package com.mutualmobile.barricade.sample;
+package com.mutualmobile.barricade.sample.utils;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -7,14 +7,17 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-class RecyclerViewMatcher {
+/**
+ * Used for Matching contents of a RecyclerView item by position
+ */
+public class RecyclerViewMatcher {
   private final int recyclerViewId;
 
-  RecyclerViewMatcher(int recyclerViewId) {
+  public RecyclerViewMatcher(int recyclerViewId) {
     this.recyclerViewId = recyclerViewId;
   }
 
-  Matcher<View> atPosition(final int position) {
+  public Matcher<View> atPosition(final int position) {
     return atPositionOnView(position, -1);
   }
 
@@ -30,9 +33,9 @@ class RecyclerViewMatcher {
           try {
             idDescription = this.resources.getResourceName(recyclerViewId);
           } catch (Resources.NotFoundException var4) {
-            idDescription = String.format("%s (resource name not found)",
-                new Object[] { Integer.valueOf
-                    (recyclerViewId) });
+            idDescription = String.format("%s (resource name not found)", new Object[] {
+                Integer.valueOf(recyclerViewId)
+            });
           }
         }
 
@@ -44,12 +47,10 @@ class RecyclerViewMatcher {
         this.resources = view.getResources();
 
         if (childView == null) {
-          RecyclerView recyclerView =
-              (RecyclerView) view.getRootView().findViewById(recyclerViewId);
+          RecyclerView recyclerView = (RecyclerView) view.getRootView().findViewById(recyclerViewId);
           if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
             childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
-          }
-          else {
+          } else {
             return false;
           }
         }
@@ -60,7 +61,6 @@ class RecyclerViewMatcher {
           View targetView = childView.findViewById(targetViewId);
           return view == targetView;
         }
-
       }
     };
   }
