@@ -34,7 +34,7 @@ import static com.mutualmobile.barricade.sample.utils.RecyclerViewMatcher.withRe
 
 @RunWith(AndroidJUnit4.class) @LargeTest public class BarricadeActivityTest {
 
-  @Rule public ActivityTestRule<BarricadeActivity> mActivityRule = new ActivityTestRule<>(BarricadeActivity.class);
+  @Rule public ActivityTestRule<BarricadeActivity> activityTestRule = new ActivityTestRule<>(BarricadeActivity.class);
 
   private static Barricade barricade;
 
