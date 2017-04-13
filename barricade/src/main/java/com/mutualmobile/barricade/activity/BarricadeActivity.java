@@ -7,11 +7,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.mutualmobile.barricade.Barricade;
 import com.mutualmobile.barricade.R;
@@ -39,6 +39,7 @@ public class BarricadeActivity extends AppCompatActivity
 
   private BarricadeEndpointsRVAdapter endpointsRVAdapter;
   private BarricadeResponsesRVAdapter responsesRVAdapter;
+  private RelativeLayout container;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -59,6 +60,8 @@ public class BarricadeActivity extends AppCompatActivity
 
     endpointsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     responsesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    container = (RelativeLayout) findViewById(R.id.activity_barricade);
   }
 
   private void setEndpointsView() {
@@ -116,32 +119,30 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void showEditDialog() {
-
-    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-    LayoutInflater inflater = this.getLayoutInflater();
-    View dialogView = inflater.inflate(R.layout.dialog_edit_global_delay, null);
-    alertDialog.setView(dialogView);
-    alertDialog.setTitle(R.string.edit_delay);
+    View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_global_delay, container, false);
 
     final EditText delayEditText = (EditText) dialogView.findViewById(R.id.delay_value_edittext);
     delayEditText.setText(String.format(Locale.US, "%d", Barricade.getInstance().getDelay()));
-    alertDialog.setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialogInterface, int i) {
-        String value = delayEditText.getText().toString();
-        if (value.isEmpty()) {
-          delayEditText.setError(getString(R.string.required));
-        } else {
-          Barricade.getInstance().setDelay(Long.parseLong(value));
-          Toast.makeText(BarricadeActivity.this, R.string.updated, Toast.LENGTH_LONG).show();
-        }
-      }
-    });
-    alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialogInterface, int i) {
 
-      }
-    });
-    alertDialog.show();
+    new AlertDialog.Builder(this).setView(dialogView)
+        .setTitle(R.string.edit_delay)
+        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+            String value = delayEditText.getText().toString();
+            if (value.isEmpty()) {
+              delayEditText.setError(getString(R.string.required));
+            } else {
+              Barricade.getInstance().setDelay(Long.parseLong(value));
+              Toast.makeText(BarricadeActivity.this, R.string.updated, Toast.LENGTH_LONG).show();
+            }
+          }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+
+          }
+        })
+        .show();
   }
 
   private void showResetDialog() {

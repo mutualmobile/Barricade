@@ -11,9 +11,8 @@ import com.mutualmobile.barricade.BarricadeConfig;
 import com.mutualmobile.barricade.activity.BarricadeActivity;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
-import com.mutualmobile.barricade.sample.utils.RecyclerViewMatcher;
 import com.mutualmobile.barricade.utils.AndroidAssetFileManager;
-import java.util.HashMap;
+import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,6 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.mutualmobile.barricade.sample.utils.RecyclerViewMatcher.withRecyclerView;
 
 /**
  * Contains Espresso tests for the Barricade Activity UI. We verify the response and it's corresponding response sets in the UI. Functionality of
@@ -53,7 +53,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
   @Test public void verifyResponsesForEndpoints() {
     int endpointCount = 0;
-    HashMap<String, BarricadeResponseSet> hashMap = barricade.getConfig();
+    Map<String, BarricadeResponseSet> hashMap = barricade.getConfig();
     for (String endpoint : hashMap.keySet()) {
       int responseCount = 0;
       onView(withId(R.id.endpoint_rv)).perform(RecyclerViewActions.actionOnItemAtPosition(endpointCount, click()));
@@ -78,9 +78,5 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
     onView(withText(R.string.reset_message)).check(matches(isDisplayed()));
     onView(withId(android.R.id.button1)).check(matches(withText(R.string.yes)));
     onView(withId(android.R.id.button2)).check(matches(withText(R.string.no)));
-  }
-
-  private RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
-    return new RecyclerViewMatcher(recyclerViewId);
   }
 }

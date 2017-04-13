@@ -33,9 +33,7 @@ public class RecyclerViewMatcher {
           try {
             idDescription = this.resources.getResourceName(recyclerViewId);
           } catch (Resources.NotFoundException var4) {
-            idDescription = String.format("%s (resource name not found)", new Object[] {
-                Integer.valueOf(recyclerViewId)
-            });
+            idDescription = String.format("%s (resource name not found)", recyclerViewId);
           }
         }
 
@@ -63,5 +61,9 @@ public class RecyclerViewMatcher {
         }
       }
     };
+  }
+
+  public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+    return new RecyclerViewMatcher(recyclerViewId);
   }
 }
