@@ -210,11 +210,11 @@ GitHubService service = retrofit.create(GitHubService.class); </code></pre>
               <pre><code>&lt;dependency>
   &lt;groupId>com.squareup.retrofit2&lt;/groupId>
   &lt;artifactId>retrofit&lt;/artifactId>
-  &lt;version><span class="version pln"><em>(insert latest version)</em></span>&lt;/version>
+  &lt;version><span class="version"><em>(insert latest version)</em></span>&lt;/version>
 &lt;/dependency> </code></pre>
                     <h4>Gradle</h4>
-              <pre><code>
-compile 'com.squareup.retrofit2:retrofit:<span class="version pln"><em>(insert latest version)</em></span>'
+              <pre><code class="groovy">
+compile 'com.squareup.retrofit2:retrofit:<span class="version"><em>(insert latest version)</em></span>'
  </code></pre>
                     <p>Retrofit requires at minimum Java 7 or Android 2.3.</p>
 
@@ -311,6 +311,7 @@ limitations under the License.</pre>
         // Look up the latest version of the library.
         $.fn.artifactVersion('com.mutualmobile', 'barricade', function (version, url) {
             $('.version').text(version);
+            $('.version').last().addClass("hljs-string");
             $('.version-tag').text('v' + version);
             $('.version-href').attr('href', url);
         });
