@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.not;
  */
 @RunWith(AndroidJUnit4.class) @LargeTest public class MainActivityTest {
 
-  @Rule public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
+  @Rule public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
   private static final String JOKE_FROM_BARRICADE = "When Chuck Norris was a kid, he made his mom eat her vegetables";
 
