@@ -49,114 +49,157 @@
     <div class="container">
         <div class="row">
             <div class="span9">
+                <br/>
+                <br/>
+                <br/>
                 <section id="introduction">
                     <h3>Introduction</h3>
-                    <p>Barricade allows apps to get responses from a local file to API requests by intercepting your API
-                        calls using an OkHttp Network Interceptor.</p>
-                    <p>It also supports multiple responses per request, unlike other local server implementations and
-                        presents the user with an UI for modifying which response to return for a request. at
-                        runtime.</p>
-              <pre><code class="java">@GET("/users/{user}/repos")
-@Barricade(endpoint = "repos", responses = {
-        @Response(fileName = "get_repos_success", isDefault = true),
-        @Response(fileName = "get_repos_error", statusCode = 500)})
-</code></pre>
-                    <p>The <code>Barricade Compiler</code> internally generates classes based on barricade-annotations
-                        and intercepts the requests based on the last segment path.</p>
-              <pre><code>Barricade barricade = new Barricade.Builder()
-    .baseUrl("https://api.github.com/")
-    .build();
-
-GitHubService service = barricade.create(GitHubService.class); </code></pre>
-                    <p>Each <code>Call</code> from the created <code>GitHubService</code> can make a synchronous or
-                        asynchronous HTTP request to the remote webserver.</p>
-                    <pre><code>Call&lt;List&lt;Repo>> repos = service.listRepos("octocat"); </code></pre>
-                    <p>Use annotations to describe the HTTP request:</p>
-                    <ul>
-                        <li>URL parameter replacement and query parameter support</li>
-                        <li>Object conversion to request body (e.g., JSON, protocol buffers)</li>
-                        <li>Multipart request body and file upload</li>
-                    </ul>
-                </section>
-
-                <section id="barricade-configuration">
-                    <h3>Barricade Configuration</h3>
-                    <p><code>Barricade</code> is the class through which your API interfaces are turned into callable
-                        objects. By default, Barricade will give you sane defaults for your platform but it allows for
-                        customization.</p>
-
-                    <h4>Converters</h4>
-                    <p>By default, Barricade can only deserialize HTTP bodies into OkHttp's <code>ResponseBody</code>
-                        type and it can only accept its <code>RequestBody</code> type for <code>@Body</code>.</p>
-                    <p>Converters can be added to support other types. Six sibling modules adapt popular serialization
-                        libraries for your convenience.</p>
-                    <ul>
-                        <li><a href="https://github.com/google/gson">Gson</a>: <code>com.mutualmobile.barricade2:converter-gson</code>
-                        </li>
-                        <li><a href="http://wiki.fasterxml.com/JacksonHome">Jackson</a>: <code>com.mutualmobile.barricade2:converter-jackson</code>
-                        </li>
-                        <li><a href="https://github.com/square/moshi/">Moshi</a>: <code>com.mutualmobile.barricade2:converter-moshi</code>
-                        </li>
-                        <li><a href="https://developers.google.com/protocol-buffers/">Protobuf</a>: <code>com.mutualmobile.barricade2:converter-protobuf</code>
-                        </li>
-                        <li><a href="https://github.com/square/wire">Wire</a>: <code>com.mutualmobile.barricade2:converter-wire</code>
-                        </li>
-                        <li><a href="http://simple.sourceforge.net/">Simple XML</a>: <code>com.mutualmobile.barricade2:converter-simplexml</code>
-                        </li>
-                        <li>Scalars (primitives, boxed, and String):
-                            <code>com.mutualmobile.barricade2:converter-scalars</code></li>
-                    </ul>
-                    <p>Here's an example of using the <code>GsonConverterFactory</code> class to generate an
-                        implementation of the <code>GitHubService</code> interface which uses Gson for its
-                        deserialization.</p>
-              <pre><code>Barricade barricade = new Barricade.Builder()
-    .baseUrl("https://api.github.com")
-    .addConverterFactory(GsonConverterFactory.create())
-    .build();
-
-GitHubService service = barricade.create(GitHubService.class); </code></pre>
-                    <h4>Custom Converters</h4>
-                    <p>If you need to communicate with an API that uses a content-format that Barricade does not support
-                        out of the box (e.g. YAML, txt, custom format) or you wish to use a different library to
-                        implement an existing format, you can easily create your own converter. Create a class that
-                        extends the <a
-                                href="https://github.com/square/barricade/blob/master/barricade/src/main/java/barricade2/Converter.java"><code>Converter.Factory</code>
-                            class</a> and pass in an instance when building your adapter.</p>
+                    <p>Barricade allows apps to get responses to API requests by intercepting them using an OkHttp
+                        Network Interceptor. The responses are fetched from local assets based on the configuration</p>
+                    <br/>
+                    <p>Barricade also supports multiple responses per request, unlike other local server implementations
+                        and
+                        presents the user with a UI for modifying which response to return for a request at
+                        runtime. It also provides an option to change the response and duration of the API call
+                        programatically</p>
                 </section>
 
                 <section id="download">
                     <h3>Download</h3>
                     <p>
-                        <a href="https://search.maven.org/remote_content?g=com.mutualmobile.barricade2&a=barricade&v=LATEST"
+                        <a href="https://bintray.com/mutualmobile/Android/barricade"
                            class="dl version-href">&darr; <span class="version-tag">Latest</span> JAR</a></p>
-                    <p>The source code to the Barricade, its samples, and this website is <a
+                    <p>The source code of Barricade, and the sample app is <a
                             href="http://github.com/square/barricade">available on GitHub</a>.</p>
-                    <h4>Maven</h4>
-              <pre><code>&lt;dependency>
-  &lt;groupId>com.mutualmobile.barricade2&lt;/groupId>
-  &lt;artifactId>barricade&lt;/artifactId>
-  &lt;version><span class="version"><em>(insert latest version)</em></span>&lt;/version>
-&lt;/dependency> </code></pre>
+
                     <h4>Gradle</h4>
               <pre><code class="groovy">
-compile 'com.mutualmobile.barricade2:barricade:<span class="version"><em>(insert latest version)</em></span>'
+compile 'com.mutualmobile:barricade:<span class="version version_pretty"><em>(insert latest version)</em></span>'
+annotationProcessor 'com.mutualmobile:barricade-compiler:<span class="version version_pretty"><em>(insert latest version)</em></span>'
  </code></pre>
-                    <p>Barricade requires at minimum Java 7 or Android 2.3.</p>
+                    <p>Barricade requires at minimum Android 4.1.</p>
 
                     <h4>ProGuard</h4>
                     <p>If you are using ProGuard in your project add the following lines to your configuration:</p>
               <pre><code>
-# Platform calls Class.forName on types which do not exist on Android to determine platform.
--dontnote barricade2.Platform
-# Platform used when running on Java 8 VMs. Will not be used at runtime.
--dontwarn barricade2.Platform$Java8
-# Retain generic type information for use by reflection by converters and adapters.
--keepattributes Signature
-# Retain declared checked exceptions for use by a Proxy instance.
--keepattributes Exceptions
+TODO
  </code></pre>
-                    <p>Barricade uses <a href="https://github.com/square/okio">Okio</a> under the hood, so you may want
-                        to look at its <a href="https://github.com/square/okio#proguard">ProGuard rules</a> as well.</p>
+                </section>
+
+                <section id="barricade-configuration">
+                    <h3>Barricade Configuration</h3>
+
+                    <p><code>Barricade</code> is the runtime class which is used to initialize and configure the library
+                        dynamically.</p>
+                    <p><code>BarricadeConfig</code> is the class which is generated at compile time based on the
+                        <strong>@Barricade</strong> annotations and data provided inside it.</p>
+                    <p><code>BarricadeActivity</code> is an activity class which provides a UI to select the default
+                        response for each API endpoint.</p>
+
+                    <br/>
+
+                    <p>Below are the steps to configure Barricade in an Android application -</p>
+                    <br/>
+                    <ol>
+                        <li>
+                            <p>Install Barricade in the <code>onCreate()</code> method of your <code>Application</code>
+                                class.</p>
+                            <pre><code class="java">@Override
+public void onCreate() {
+    super.onCreate();
+    new Barricade.Builder(this, new BarricadeConfig()).enableShakeToStart(this).install();
+    ...
+}</code></pre>
+
+                            Note: Setting enableShakeToStart to true starts BarricadeActivity when device is shaked
+                            twice.
+                        </li>
+                        <br/>
+                        <li>
+                            <p>Add your API response files to <code>assets/barricade/&lt;endpoint_name></code> for
+                                different types of responses (success, invalid, error etc).</p>
+                        </li>
+                        <br/>
+                        <li>
+                            <p>In the Retrofit service API interface, annotate the methods with @Barricade. The <code>@Barricade</code>
+                                annotation accepts 2 parameters:</p>
+                            <ul>
+                                <li>endpoint - The name of the last path segment in the URL</li>
+                                <li>responses - An array of <code>@Response</code> annotations corresponding to various
+                                    responses barricade can return
+                                </li>
+                            </ul>
+
+                            <pre><code>@GET("/users/{user}/repos")
+@Barricade(endpoint = "repos", responses = {
+        @Response(fileName = "get_repos_success", isDefault = true),
+        @Response(fileName = "get_repos_error", statusCode = 500)
+})
+...</code></pre>
+                            <p>Each <code>@Response</code> annotation corresponds to a unique response for the given
+                                endpoint. It takes 4 parameters:</p>
+                            <ul>
+                                <li>fileName - The name of the response file in folder <code>assets/barricade/<span
+                                        style="color:red">endpoint</span>/</code></li>
+                                <li>statusCode - The status code of the API response (eg. 200, 404, 500, etc)</li>
+                                <li>type - Response type (eg. "application/json", "application/xml", etc)</li>
+                                <li>isDefault - Should be set to true for only one response for a given endpoint. This
+                                    sets the enclosing response as the default for given endpoint
+                                </li>
+                            </ul>
+                        </li>
+                        <br/>
+                        <li>
+                            <p>Add <code>BarricadeInterceptor</code> to <code>OkHttpClient</code></p>
+
+                            <pre><code class="java">OkHttpClient okHttpClient =
+      new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor())
+          ...
+          .build();
+                            </code></pre>
+                        </li>
+
+                        <li>Done</li>
+                    </ol>
+
+                    <h4>Configure Barricade programmatically</h4>
+
+                    <ul>
+                        <li>
+                            <p>Barricade can be enabled or disabled at runtime.</p>
+                            <p>To enable - <code>Barricade.getInstance().setEnabled(true);</code></p>
+                            <p>To disable - <code>Barricade.getInstance().setEnabled(false);</code></p>
+
+                        </li>
+                        <li>
+                            <p>Change response for endpoints</p>
+
+                            <p>Barricade allows changing the response time and the default response for an endpoint at
+                                runtime.</p>
+                            <p>If enableShakeToStart was set to true during Barricade initialization, the following
+                                process can used to configure Barricade -</p>
+
+                            <ul>
+                                <li>Open Barricade settings by shaking the device</li>
+                                <li>Change the response time in milliseconds by clicking on the timer on top right</li>
+                                <li>To change the required response for a request, click on the request from list and
+                                    then
+                                    select the response you want from the list of responses. This list is populated from
+                                    the
+                                    response files in assets folder
+                                </li>
+                            </ul>
+
+                            <br>
+                            <p>You can also change the above settings programmatically which can be helpful for testing
+                                -</p>
+                        <pre><code>Barricade.getInstance()
+        .setDelay(100)
+        .setResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);
+</code></pre>
+                            <p>Note: Changes made using setDelay and setResponse are persisted in SharedPreferences.</p>
+                        </li>
+                    </ul>
                 </section>
 
                 <section id="contributing">
@@ -188,8 +231,8 @@ limitations under the License.</pre>
                 <div class="content-nav" data-spy="affix" data-offset-top="80">
                     <ul class="nav nav-tabs nav-stacked primary">
                         <li><a href="#introduction">Introduction</a></li>
-                        <li><a href="#barricade-configuration">Barricade Configuration</a></li>
                         <li><a href="#download">Download</a></li>
+                        <li><a href="#barricade-configuration">Barricade Configuration</a></li>
                         <li><a href="#contributing">Contributing</a></li>
                         <li><a href="#license">License</a></li>
                     </ul>
@@ -234,12 +277,11 @@ limitations under the License.</pre>
 
         // Look up the latest version of the library.
         $.fn.artifactVersion('com.mutualmobile', 'barricade', function (version, url) {
-            var versionTags = $('.version');
-            versionTags.last().addClass("hljs-string");
-            versionTags.text(version);
+            $('.version_pretty').addClass("hljs-string");
+            $('.version').text(version);
 
             $('.version-tag').text('v' + version);
-            $('.version-href').attr('href', url);
+            $('.version-href').attr('href', "https://bintray.com/mutualmobile/Android/barricade/" + version);
         });
     });
 </script>
