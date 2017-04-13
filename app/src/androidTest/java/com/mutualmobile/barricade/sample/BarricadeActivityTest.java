@@ -69,13 +69,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
   @Test public void verifyDelayTimeDialogShowsCorrectDelay() {
     onView(withId(R.id.menu_delay)).perform(click());
     onView(withId(R.id.delay_value_edittext)).check(matches(withText(Long.toString(barricade.getDelay()))));
-    Espresso.pressBack();
+    onView(withId(android.R.id.button1)).check(matches(withText(R.string.set)));
+    onView(withId(android.R.id.button2)).check(matches(withText(R.string.cancel)));
   }
 
   @Test public void verifyResetDialogIsDisplayed() {
     onView(withId(R.id.menu_reset)).perform(click());
     onView(withText(R.string.reset_message)).check(matches(isDisplayed()));
-    Espresso.pressBack();
+    onView(withId(android.R.id.button1)).check(matches(withText(R.string.yes)));
+    onView(withId(android.R.id.button2)).check(matches(withText(R.string.no)));
   }
 
   private RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
