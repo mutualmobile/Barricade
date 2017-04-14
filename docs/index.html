@@ -55,13 +55,37 @@
                 <section id="introduction">
                     <h3>Introduction</h3>
                     <p>Barricade allows apps to get responses to API requests by intercepting them using an OkHttp
-                        Network Interceptor. The responses are fetched from local assets based on the configuration</p>
+                        Network Interceptor. The responses are fetched from local assets based on the configuration.</p>
                     <br/>
                     <p>Barricade also supports multiple responses per request, unlike other local server implementations
                         and
                         presents the user with a UI for modifying which response to return for a request at
                         runtime. It also provides an option to change the response and duration of the API call
                         programatically</p>
+                </section>
+
+                <section id="why-barricade">
+                    <h3>Why Barricade</h3>
+                    <ul>
+                        <li>Barricade removes the hard dependency of an Android app on it's backend. Just with the API
+                            specification, developers can start developing and testing their apps without waiting for
+                            the backend to be set up.
+                        </li>
+                        <br>
+                        <li>Barricade is useful for covering all the edge cases that an API endpoint can have, by
+                            modifying the responses and response time of the API locally. This reduces the load of
+                            setting up tools like charles proxy to test how the app reats to various responses.
+                        </li>
+                        <br>
+                        <li>Barricade allows configuring the response time of each API at runtime both programatically
+                            and from the UI. This help a lot in testing as various android components react differently
+                            to different response times.
+                        </li>
+                        <br>
+                        <li>Barricade helps in writing better unit, integration and instrumentation tests by allowing to
+                            toggle through predefined responses for every request.
+                        </li>
+                    </ul>
                 </section>
 
                 <section id="download">
@@ -193,7 +217,7 @@ public void onCreate() {
                             <br>
                             <p>You can also change the above settings programmatically which can be helpful for testing
                                 -</p>
-                        <pre><code>Barricade.getInstance()
+                        <pre><code class="java">Barricade.getInstance()
         .setDelay(100)
         .setResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);
 </code></pre>
@@ -231,6 +255,7 @@ limitations under the License.</pre>
                 <div class="content-nav" data-spy="affix" data-offset-top="80">
                     <ul class="nav nav-tabs nav-stacked primary">
                         <li><a href="#introduction">Introduction</a></li>
+                        <li><a href="#why-barricade">Why Barricade</a></li>
                         <li><a href="#download">Download</a></li>
                         <li><a href="#barricade-configuration">Barricade Configuration</a></li>
                         <li><a href="#contributing">Contributing</a></li>
