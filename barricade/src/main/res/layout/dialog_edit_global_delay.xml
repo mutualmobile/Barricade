@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:minWidth="500dp"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     >
 
   <EditText
@@ -13,29 +13,5 @@
       android:layout_height="wrap_content"
       android:inputType="number"
       />
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:gravity="end"
-      android:orientation="horizontal"
-      >
-    <Button
-        android:id="@+id/delay_cancel_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        />
-    <Button
-        android:id="@+id/delay_save_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        />
-  </LinearLayout>
-
 
 </LinearLayout>

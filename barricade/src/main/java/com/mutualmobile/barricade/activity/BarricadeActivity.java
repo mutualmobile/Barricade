@@ -2,7 +2,6 @@ package com.mutualmobile.barricade.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 import com.mutualmobile.barricade.Barricade;
 import com.mutualmobile.barricade.R;
 import com.mutualmobile.barricade.adapter.BarricadeEndpointsRVAdapter;
 import com.mutualmobile.barricade.adapter.BarricadeResponsesRVAdapter;
-import com.mutualmobile.barricade.fragment.EditGlobalDelayDialogFragment;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Activity to view the Barricade configuration and change default responses for endpoints. This
@@ -27,8 +29,7 @@ import java.util.HashMap;
  * If you want to persist them, use annotations parameters instead.
  */
 public class BarricadeActivity extends AppCompatActivity
-    implements BarricadeEndpointsRVAdapter.EndpointClickedListener,
-    BarricadeResponsesRVAdapter.EndpointResponseClickedListener {
+    implements BarricadeEndpointsRVAdapter.EndpointClickedListener, BarricadeResponsesRVAdapter.EndpointResponseClickedListener {
 
   private HashMap<String, BarricadeResponseSet> barricadeConfig;
 
@@ -38,6 +39,7 @@ public class BarricadeActivity extends AppCompatActivity
 
   private BarricadeEndpointsRVAdapter endpointsRVAdapter;
   private BarricadeResponsesRVAdapter responsesRVAdapter;
+  private RelativeLayout container;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -58,6 +60,8 @@ public class BarricadeActivity extends AppCompatActivity
 
     endpointsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     responsesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    container = (RelativeLayout) findViewById(R.id.activity_barricade);
   }
 
   private void setEndpointsView() {
@@ -71,9 +75,7 @@ public class BarricadeActivity extends AppCompatActivity
   private void setResponsesView(String endpoint) {
     actionBar.setTitle(endpoint);
     BarricadeResponseSet responseSet = barricadeConfig.get(endpoint);
-    responsesRVAdapter =
-        new BarricadeResponsesRVAdapter(endpoint, responseSet.responses, responseSet.defaultIndex,
-            this);
+    responsesRVAdapter = new BarricadeResponsesRVAdapter(endpoint, responseSet.responses, responseSet.defaultIndex, this);
     responsesRecyclerView.setAdapter(responsesRVAdapter);
     endpointsRecyclerView.setVisibility(View.GONE);
     responsesRecyclerView.setVisibility(View.VISIBLE);
@@ -117,9 +119,30 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void showEditDialog() {
-    FragmentManager fm = getSupportFragmentManager();
-    EditGlobalDelayDialogFragment dialogFragment = new EditGlobalDelayDialogFragment();
-    dialogFragment.show(fm, EditGlobalDelayDialogFragment.class.getName());
+    View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_global_delay, container, false);
+
+    final EditText delayEditText = (EditText) dialogView.findViewById(R.id.delay_value_edittext);
+    delayEditText.setText(String.format(Locale.US, "%d", Barricade.getInstance().getDelay()));
+
+    new AlertDialog.Builder(this).setView(dialogView)
+        .setTitle(R.string.edit_delay)
+        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+            String value = delayEditText.getText().toString();
+            if (value.isEmpty()) {
+              delayEditText.setError(getString(R.string.required));
+            } else {
+              Barricade.getInstance().setDelay(Long.parseLong(value));
+              Toast.makeText(BarricadeActivity.this, R.string.updated, Toast.LENGTH_LONG).show();
+            }
+          }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+          @Override public void onClick(DialogInterface dialogInterface, int i) {
+
+          }
+        })
+        .show();
   }
 
   private void showResetDialog() {
