@@ -10,4 +10,8 @@
   <string name="reset_message">Are you sure you want to reset the configuration?</string>
   <string name="yes">Yes</string>
   <string name="no">No</string>
+  <string name="edit_delay">Delay Time</string>
+  <string name="enter_delay">Enter Delay</string>
+  <string name="set">Set</string>
+  <string name="cancel">Cancel</string>
 </resources>
