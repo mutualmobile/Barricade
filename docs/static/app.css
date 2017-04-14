@@ -150,11 +150,11 @@ p.license {
 
 .row .logo {
     text-align: center;
-    margin-top: 150px;
+    margin-top: 120px;
 }
 
 .row .logo img {
-    height: 30px;
+    height: 20px;
 }
 
 pre, code {

@@ -60,7 +60,7 @@
                     <p>Barricade also supports multiple responses per request, unlike other local server implementations
                         and
                         presents the user with a UI for modifying which response to return for a request at
-                        runtime. It also provides an option to change the response and duration of the API call
+                        runtime. It also provides an option to change the response and latency of the API call
                         programatically</p>
                 </section>
 
@@ -74,7 +74,7 @@
                         <br>
                         <li>Barricade is useful for covering all the edge cases that an API endpoint can have, by
                             modifying the responses and response time of the API locally. This reduces the load of
-                            setting up tools like charles proxy to test how the app reats to various responses.
+                            setting up tools like Charles proxy to test how the app reats to various responses.
                         </li>
                         <br>
                         <li>Barricade allows configuring the response time of each API at runtime both programatically
@@ -158,7 +158,7 @@ public void onCreate() {
 @Barricade(endpoint = "repos", responses = {
         @Response(fileName = "get_repos_success", isDefault = true),
         @Response(fileName = "get_repos_error", statusCode = 500)
-})
+}) Single&lt;ReposResponse> getUserRepositories(@Path("user") String userId);
 ...</code></pre>
                             <p>Each <code>@Response</code> annotation corresponds to a unique response for the given
                                 endpoint. It takes 4 parameters:</p>
