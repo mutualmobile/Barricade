@@ -6,6 +6,9 @@ android:
     - build-tools-25.0.2
     - android-25
     - extra-android-m2repository
+    - extra
+    - addon
+    - sys-img-armeabi-v7a-android-19
 script:
     - ./gradlew clean assemble test
 deploy:
@@ -14,3 +17,10 @@ deploy:
     github_token: $GITHUB_TOKEN
     on:
       branch: master
+before_script:
+  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+script:
+    - ./gradlew connectedAndroidTest
