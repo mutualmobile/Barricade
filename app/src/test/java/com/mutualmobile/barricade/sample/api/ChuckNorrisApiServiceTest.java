@@ -46,8 +46,8 @@ public class ChuckNorrisApiServiceTest {
     assertThat(joke.id).isNotEmpty();
     assertThat(joke.value).isNotNull();
     assertThat(joke.value).isNotEmpty();
-    assertThat(joke.iconUrl).isNotNull();
-    assertThat(joke.iconUrl).isNotEmpty();
+    assertThat(joke.icon_url).isNotNull();
+    assertThat(joke.icon_url).isNotEmpty();
   }
 
   @Test public void canFetchRandomJokeFromBarricade() throws IOException {
@@ -65,9 +65,9 @@ public class ChuckNorrisApiServiceTest {
     assertThat(joke.value).isNotNull();
     assertThat(joke.value).isNotEmpty();
     assertThat(joke.value).isEqualTo("When Chuck Norris was a kid, he made his mom eat her vegetables");
-    assertThat(joke.iconUrl).isNotNull();
-    assertThat(joke.iconUrl).isNotEmpty();
-    assertThat(joke.iconUrl).isEqualTo("https://assets.chucknorris.host/img/avatar/chuck-norris.png");
+    assertThat(joke.icon_url).isNotNull();
+    assertThat(joke.icon_url).isNotEmpty();
+    assertThat(joke.icon_url).isEqualTo("https://assets.chucknorris.host/img/avatar/chuck-norris.png");
   }
 
   @Test public void canSetBarricadeResponseAtRunTime() throws IOException {
