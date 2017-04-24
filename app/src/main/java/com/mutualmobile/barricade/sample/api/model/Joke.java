@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class Joke {
   public String id;
   public String value;
-  @SerializedName("icon_url")
-  public String icon_url;
+  @SerializedName("iconUrl")
+  public String iconUrl;
   public String category;
   public String url;
 
