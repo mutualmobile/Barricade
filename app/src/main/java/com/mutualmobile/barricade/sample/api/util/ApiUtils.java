@@ -6,7 +6,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class ApiUtils {
 
@@ -18,11 +17,8 @@ public class ApiUtils {
 
     okHttpClient = new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor()).addInterceptor(httpLoggingInterceptor).build();
 
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.chucknorris.io")
-        .client(okHttpClient)
-        .addConverterFactory(SimpleXmlConverterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build();
+    Retrofit retrofit =
+        new Retrofit.Builder().baseUrl("https://api.chucknorris.io").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
 
     return retrofit.create(ChuckNorrisApiService.class);
   }
