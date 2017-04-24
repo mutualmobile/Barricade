@@ -8,7 +8,7 @@ android:
     - extra-android-m2repository
     - extra
     - addon
-    - sys-img-armeabi-v7a-android-19
+    - sys-img-x86-android-19
 script:
     - ./gradlew clean assemble test
 deploy:
