@@ -121,7 +121,7 @@ final class CodeGenerator {
     int count = 0;
     for (BarricadeResponse response : responses) {
       FieldSpec valuesField = FieldSpec.builder(int.class,
-          StringUtils.removeAllSpecialCharacters(response.responseFileName).toUpperCase())
+          StringUtils.removeAllSpecialCharactersAndExtensions(response.responseFileName).toUpperCase())
           .addModifiers(PUBLIC, STATIC, FINAL)
           .initializer("$L", count)
           .build();
