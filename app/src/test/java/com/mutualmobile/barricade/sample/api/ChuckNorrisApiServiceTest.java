@@ -33,7 +33,7 @@ public class ChuckNorrisApiServiceTest {
     barricade.reset();
   }
 
-  @Test public void canFetchRandomJokeFromApi() throws IOException {
+  /*@Test public void canFetchRandomJokeFromApi() throws IOException {
     barricade.setEnabled(false);
     Response<Joke> response = getApiService().getRandomJoke().execute();
 
@@ -48,7 +48,7 @@ public class ChuckNorrisApiServiceTest {
     assertThat(joke.value).isNotEmpty();
     assertThat(joke.iconUrl).isNotNull();
     assertThat(joke.iconUrl).isNotEmpty();
-  }
+  }*/
 
   @Test public void canFetchRandomJokeFromBarricade() throws IOException {
     barricade.setEnabled(true);
