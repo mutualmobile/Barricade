@@ -23,6 +23,16 @@ at runtime.
 
 * To build a **demo mode** so that users can explore the app with dummy data
 
+## How is it different from OkHttp's MockWebServer
+
+* MockWebServer is queue-based which is ok for simple apps, but hard to use predictably when you have multiple calls getting fired at the same time. Barricade is call-specific so it'll always return the response you configure irrespective of the number of requests your app is making.
+
+* Barricade gives you a UI to easily change the configuration whenever you want so even your QA can test different scenarios easily,
+
+* Barricade can be used outside of tests. For example, you can easily build a full-fledged demo mode to allow users to try out the app without creating an account.
+
+* Barricade allows you to specify responses in files instead of plain strings which keeps your codebase clean.
+
 
 ## Adding Barricade to your project
 
@@ -82,11 +92,11 @@ Barricade allows you to change the response time and the required response for a
 * To change the required response for a request, click on the request from list and then select the response you want from
 the list of responses. This list is populated from the response files in assets folder
 
-You can also change the above settings programmatically which can be helpful for testing - 
+You can also change the above settings programmatically which can be helpful for testing -
 ```
-Barricade.getInstance().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);; 
+Barricade.getInstance().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);;
 ```
-* `withResponse()` changes the response of the endpoint passed in the first parameter. 
+* `withResponse()` changes the response of the endpoint passed in the first parameter.
 
 
 **Note:** Using the above technique will also save the settings and apply to other responses as well, not just the
