@@ -66,11 +66,24 @@ dependencies {
   ```
   @GET("/users/{user}/repos")
   @Barricade(endpoint = "repos", responses = {
-          @Response(fileName = "get_repos_success", isDefault = true),
-          @Response(fileName = "get_repos_error", statusCode = 500)
+          @Response(fileName = "success.json", isDefault = true),
+          @Response(fileName = "failure.json", statusCode = 500)
   })
   ...
   ```
+  
+  To support different response types - 
+  ```
+      @GET("/users/{user}/repos")
+      @Barricade(endpoint = "repos", responses = {
+              @Response(fileName = "success.xml", type = "application/xml", isDefault = true),
+              @Response(fileName = "failure.xml", type = "application/xml", statusCode = 500)
+      })
+      ...
+  ```
+  Default type is "application/json"
+    
+    
 4. Add `BarricadeInterceptor` to your `OkHttpClient`
 
   ```

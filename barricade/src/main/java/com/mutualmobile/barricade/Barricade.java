@@ -138,8 +138,7 @@ public class Barricade {
   }
 
   private String getResponseFromFile(String endpoint, String variant) {
-    // TODO: 4/4/17 Check with other file formats other than JSON
-    String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
+    String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant;
     return fileManager.getContentsOfFileAsString(fileName);
   }
 

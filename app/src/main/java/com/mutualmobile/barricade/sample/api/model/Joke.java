@@ -7,6 +7,8 @@ public class Joke {
   public String value;
   @SerializedName("icon_url")
   public String iconUrl;
+  public String category;
+  public String url;
 
   @Override public String toString() {
     return "Joke{\n"
