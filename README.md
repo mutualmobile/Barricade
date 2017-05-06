@@ -11,8 +11,6 @@ It also supports multiple responses per request, unlike other local server imple
 at runtime.
 
 
-**Barricade is currently in beta and works only with Retrofit-OkHttp at the moment.**
-
 <p align="center"><img src="https://media.giphy.com/media/3ohze2Klh6Q5vApaFi/giphy.gif"></p>
 
 ## When to use
@@ -23,7 +21,7 @@ at runtime.
 
 * To build a **demo mode** so that users can explore the app with dummy data
 
-## How is it different from OkHttp's MockWebServer
+#### How is it different from OkHttp's MockWebServer?
 
 * MockWebServer is queue-based which is ok for simple apps, but hard to use predictably when you have multiple calls getting fired at the same time. Barricade is call-specific so it'll always return the response you configure irrespective of the number of requests your app is making.
 
@@ -62,41 +60,37 @@ dependencies {
 
 3. In your Retrofit API interface, for the required methods, add annotation `@Barricade` which mentions which endpoint to intercept and the possible responses using `@Response` annotation.
 
-  Example -
-  ```
-  @GET("/users/{user}/repos")
-  @Barricade(endpoint = "repos", responses = {
-          @Response(fileName = "success.json", isDefault = true),
-          @Response(fileName = "failure.json", statusCode = 500)
-  })
-  ...
-  ```
+Example -
+```
+@GET("/users/{user}/repos")
+@Barricade(endpoint = "repos", responses = {
+    @Response(fileName = "success.json", isDefault = true),
+    @Response(fileName = "failure.json", statusCode = 500)
+}) Single<ReposResponse> getUserRepositories(@Path("user") String userId);
+```
 
-  To support different response types -
-  ```
-      @GET("/users/{user}/repos")
-      @Barricade(endpoint = "repos", responses = {
-              @Response(fileName = "success.xml", type = "application/xml", isDefault = true),
-              @Response(fileName = "failure.xml", type = "application/xml", statusCode = 500)
-      })
-      ...
-  ```
-  Default type is "application/json"
+To configure multiple / non-JSON responses -
+```
+@GET("/users/{user}/repos")
+@Barricade(endpoint = "repos", responses = {
+    @Response(fileName = "success.xml", type = "application/xml", isDefault = true),
+    @Response(fileName = "failure.xml", type = "application/xml", statusCode = 500)
+}) Single<ReposResponse> getUserRepositories(@Path("user") String userId);
+```
+Default type is "application/json"
 
 
 4. Add `BarricadeInterceptor` to your `OkHttpClient`
 
-  ```
-  OkHttpClient okHttpClient =
-        new OkHttpClient.Builder().addInterceptor(new BarricadeInterceptor())
-            ...
-            .build();
-  ```
+```
+OkHttpClient okHttpClient = new OkHttpClient.Builder()
+    .addInterceptor(new BarricadeInterceptor())
+    ...
+    .build();
+```
 
 #### Enable/ Disable Barricade
-Barricade can be enabled or disabled at runtime.
-* To enable - `Barricade.getInstance().enable()`
-* To disable - `Barricade.getInstance().disable();`
+Barricade can be enabled or disabled at runtime using `Barricade.getInstance().setEnabled(true/false)`
 
 #### Change Settings
 Barricade allows you to change the response time and the required response for a request at runtime.
@@ -107,7 +101,9 @@ the list of responses. This list is populated from the response files in assets 
 
 You can also change the above settings programmatically which can be helpful for testing -
 ```
-Barricade.getInstance().setDelay(100).withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);;
+Barricade.getInstance()
+    .setDelay(100)
+    .withResponse(BarricadeConfig.Endpoints.REPOS, BarricadeConfig.Responses.Repos.GetReposSuccess);
 ```
 * `withResponse()` changes the response of the endpoint passed in the first parameter.
 
@@ -118,7 +114,7 @@ next response, until changed.
 License
 -------
 
-    Copyright 2016 - 2017 Mutual Mobile
+    Copyright 2016 Mutual Mobile
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
