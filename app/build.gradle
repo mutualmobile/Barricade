@@ -74,3 +74,13 @@ dependencies {
     exclude module: 'recyclerview-v7'
   }
 }
+
+
+configurations.all {
+  resolutionStrategy {
+    // cache dynamic versions for 10 minutes
+    cacheDynamicVersionsFor 10*60, 'seconds'
+    // don't cache changing modules at all
+    cacheChangingModulesFor 0, 'seconds'
+  }
+}
