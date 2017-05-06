@@ -3,6 +3,7 @@ package com.mutualmobile.barricade;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import com.mutualmobile.barricade.activity.BarricadeActivity;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
@@ -49,8 +50,7 @@ public class Barricade {
   private Barricade() {
   }
 
-  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay,
-      Application application) {
+  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay, Application application) {
     this.barricadeConfig = barricadeConfig;
     this.fileManager = fileManager;
     this.delay = delay;
@@ -124,8 +124,7 @@ public class Barricade {
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode)
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
-        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType),
-            fileResponse.getBytes()))
+        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))
         .addHeader("content-type", barricadeResponse.contentType)
         .build();
   }
@@ -139,8 +138,13 @@ public class Barricade {
   }
 
   private String getResponseFromFile(String endpoint, String variant) {
+<<<<<<< HEAD
     String fileName =
         ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant;
+=======
+    // TODO: 4/4/17 Check with other file formats other than JSON
+    String fileName = ROOT_DIRECTORY + File.separator + endpoint + File.separator + variant + ".json";
+>>>>>>> master
     return fileManager.getContentsOfFileAsString(fileName);
   }
 
@@ -201,7 +205,11 @@ public class Barricade {
    */
   public void launchConfigActivity(Context context) {
     Intent intent = new Intent(context, BarricadeActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT);
+    } else {
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
     context.startActivity(intent);
   }
 }
