@@ -13,7 +13,7 @@ at runtime.
 
 **Barricade is currently in beta and works only with Retrofit-OkHttp at the moment.**
 
-<p align="center"><img src="https://github.com/mutualmobile/Barricade/blob/master/art/In_action.gif" width="288" height="512"></p>
+<p align="center"><img src="https://media.giphy.com/media/3ohze2Klh6Q5vApaFi/giphy.gif"></p>
 
 ## When to use
 
@@ -71,8 +71,8 @@ dependencies {
   })
   ...
   ```
-  
-  To support different response types - 
+
+  To support different response types -
   ```
       @GET("/users/{user}/repos")
       @Barricade(endpoint = "repos", responses = {
@@ -82,8 +82,8 @@ dependencies {
       ...
   ```
   Default type is "application/json"
-    
-    
+
+
 4. Add `BarricadeInterceptor` to your `OkHttpClient`
 
   ```
