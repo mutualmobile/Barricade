@@ -86,6 +86,19 @@
                             toggle through predefined responses for every request.
                         </li>
                     </ul>
+                    <h4>How is it different from OkHttp's MockWebServer?</h4>
+                    <ul>
+                      <li>MockWebServer is queue-based which is ok for simple apps, but hard to use predictably when you
+                        have multiple calls getting fired at the same time. Barricade is call-specific so it'll always return
+                        the response you configure irrespective of the number of requests your app is making.</li>
+                        <br>
+                      <li>Barricade gives you a UI to easily change the configuration whenever you want so even your QA can test different scenarios easily,</li>
+                      <br>
+                      <li>Barricade can be used outside of tests. For example, you can easily build a full-fledged demo mode to allow users to
+                        try out the app without creating an account.</li>
+                        <br>
+                      <li>Barricade allows you to specify responses in files instead of plain strings which keeps your codebase clean.</li>
+                    </ul>
                 </section>
 
                 <section id="download">
@@ -101,13 +114,8 @@
 compile 'com.mutualmobile:barricade:<span class="version version_pretty"><em>(insert latest version)</em></span>'
 annotationProcessor 'com.mutualmobile:barricade-compiler:<span class="version version_pretty"><em>(insert latest version)</em></span>'
  </code></pre>
-                    <p>Barricade requires at minimum Android 4.1.</p>
+                    <p>Barricade supports Android 4.1+</p>
 
-                    <h4>ProGuard</h4>
-                    <p>If you are using ProGuard in your project add the following lines to your configuration:</p>
-              <pre><code>
-TODO
- </code></pre>
                 </section>
 
                 <section id="barricade-configuration">
