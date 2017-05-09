@@ -65,9 +65,7 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void setEndpointsView() {
-    if (actionBar != null) {
-      actionBar.setTitle(R.string.title_activity);
-    }
+    setToolbarTitle(getString(R.string.title_activity));
     endpointsRVAdapter = new BarricadeEndpointsRVAdapter(barricadeConfig, this);
     endpointsRecyclerView.setAdapter(endpointsRVAdapter);
     endpointsRecyclerView.setVisibility(View.VISIBLE);
@@ -75,14 +73,18 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void setResponsesView(String endpoint) {
-    if (actionBar != null) {
-      actionBar.setTitle(endpoint);
-    }
+    setToolbarTitle(endpoint);
     BarricadeResponseSet responseSet = barricadeConfig.get(endpoint);
     responsesRVAdapter = new BarricadeResponsesRVAdapter(endpoint, responseSet.responses, responseSet.defaultIndex, this);
     responsesRecyclerView.setAdapter(responsesRVAdapter);
     endpointsRecyclerView.setVisibility(View.GONE);
     responsesRecyclerView.setVisibility(View.VISIBLE);
+  }
+
+  private void setToolbarTitle(String title) {
+    if (actionBar != null) {
+      actionBar.setTitle(title);
+    }
   }
 
   @Override public void onBackPressed() {
@@ -123,7 +125,8 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void showEditDialog() {
-    View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_global_delay, container, false);
+    View dialogView =
+        getLayoutInflater().inflate(R.layout.dialog_edit_global_delay, container, false);
 
     final EditText delayEditText = (EditText) dialogView.findViewById(R.id.delay_value_edittext);
     delayEditText.setText(String.format(Locale.US, "%d", Barricade.getInstance().getDelay()));
