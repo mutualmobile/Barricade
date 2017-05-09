@@ -65,7 +65,9 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void setEndpointsView() {
-    actionBar.setTitle(R.string.title_activity);
+    if (actionBar != null) {
+      actionBar.setTitle(R.string.title_activity);
+    }
     endpointsRVAdapter = new BarricadeEndpointsRVAdapter(barricadeConfig, this);
     endpointsRecyclerView.setAdapter(endpointsRVAdapter);
     endpointsRecyclerView.setVisibility(View.VISIBLE);
@@ -73,7 +75,9 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void setResponsesView(String endpoint) {
-    actionBar.setTitle(endpoint);
+    if (actionBar != null) {
+      actionBar.setTitle(endpoint);
+    }
     BarricadeResponseSet responseSet = barricadeConfig.get(endpoint);
     responsesRVAdapter = new BarricadeResponsesRVAdapter(endpoint, responseSet.responses, responseSet.defaultIndex, this);
     responsesRecyclerView.setAdapter(responsesRVAdapter);
