@@ -60,7 +60,7 @@ public class Barricade {
     }
   }
 
-  boolean isEnabled() {
+  public boolean isEnabled() {
     return enabled;
   }
 
