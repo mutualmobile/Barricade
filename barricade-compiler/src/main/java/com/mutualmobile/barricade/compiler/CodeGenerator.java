@@ -178,6 +178,7 @@ final class CodeGenerator {
         .addParameter(String.class, "endpoint")
         .returns(BarricadeResponse.class)
         .addStatement("$T responseSet = configs.get(endpoint)", BarricadeResponseSet.class)
+        .addStatement("if(responseSet==null) return null")
         .addStatement("return responseSet.responses.get(responseSet.defaultIndex)");
   }
 }
