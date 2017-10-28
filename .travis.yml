@@ -16,6 +16,7 @@ android:
     - build-tools-26.0.2
     - android-26
     - extra-android-m2repository
+    - extra-android-support
 
 script:
    - ./gradlew build connectedCheck
