@@ -40,3 +40,6 @@ before_script:
 script:
   - ./wait_for_emulator
   - ./gradlew connectedCheck -PdisablePreDex
+
+notifications:
+  email: false
