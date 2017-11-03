@@ -5,21 +5,16 @@ buildscript {
     jcenter()
     mavenCentral()
   }
-  dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-  }
 }
 
-apply plugin: 'android-apt'
-
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.2"
+  compileSdkVersion 26
+  buildToolsVersion '26.0.2'
 
   defaultConfig {
     applicationId "com.mutualmobile.barricade.sample"
     minSdkVersion 16
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -46,33 +41,34 @@ android {
 
 
 dependencies {
-  compile "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
-  compile "com.android.support:cardview-v7:${SUPPORT_LIB_VERSION}"
+  implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
+  implementation "com.android.support:cardview-v7:${SUPPORT_LIB_VERSION}"
 
-  compile project(':barricade')
-  apt project(':barricade-compiler')
+  implementation project(':barricade')
+  annotationProcessor project(':barricade-compiler')
 
-  compile "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
+  implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
 
-  compile 'com.squareup.retrofit2:retrofit:2.2.0'
-  compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+  implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+  implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-  testCompile 'junit:junit:4.12'
-  testCompile 'com.google.truth:truth:0.31'
+  testImplementation 'junit:junit:4.12'
+  testImplementation 'com.google.truth:truth:0.35'
 
-  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-  androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+  androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+  androidTestImplementation 'com.android.support.test:runner:1.0.1'
+  androidTestImplementation "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
 
-  androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
-  androidTestCompile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
-  androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+  androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+  androidTestImplementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+  androidTestImplementation('com.android.support.test.espresso:espresso-contrib:2.2') {
     // Necessary to avoid version conflicts
     exclude group: 'com.android.support', module: 'appcompat'
     exclude group: 'com.android.support', module: 'support-v4'
     exclude group: 'com.android.support', module: 'support-annotations'
     exclude module: 'recyclerview-v7'
   }
+  compile project(path: ':barricade-annotations')
 }
 
 
