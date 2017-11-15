@@ -38,8 +38,8 @@ Include the following dependencies in your app's build.gradle :
 
 ```
 dependencies {
-    compile 'com.mutualmobile:barricade:0.1.6'
-    annotationProcessor 'com.mutualmobile:barricade-compiler:0.1.6'
+    compile 'com.mutualmobile:barricade:0.1.7'
+    annotationProcessor 'com.mutualmobile:barricade-compiler:0.1.7'
 }
 ```
 
