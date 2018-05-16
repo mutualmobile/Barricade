@@ -121,7 +121,7 @@ public class Barricade {
       return null;
     }
     String fileResponse = getResponseFromFile(endpoint, barricadeResponse.responseFileName);
-    return new okhttp3.Response.Builder().code(barricadeResponse.statusCode)
+    return new okhttp3.Response.Builder().code(barricadeResponse.statusCode).message("Barricade OK")
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
         .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))

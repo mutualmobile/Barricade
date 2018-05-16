@@ -4,12 +4,12 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.2"
+  compileSdkVersion 26
+  buildToolsVersion '26.0.2'
 
   defaultConfig {
     minSdkVersion 16
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 1
     versionName VERSION_NAME
     vectorDrawables.useSupportLibrary = true
@@ -35,17 +35,17 @@ ext {
 }
 
 dependencies {
-  compile project(':barricade-annotations')
+  implementation project(':barricade-annotations')
 
-  compile "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
-  compile "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
-  compile "com.android.support:recyclerview-v7:${SUPPORT_LIB_VERSION}"
+  implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
+  implementation "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
+  implementation "com.android.support:recyclerview-v7:${SUPPORT_LIB_VERSION}"
 
-  compile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+  implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
 
-  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-  androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+  androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+  androidTestImplementation 'com.android.support.test:runner:1.0.1'
+  androidTestImplementation "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
 }
 
 apply from: '../bintray.gradle'
