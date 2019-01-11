@@ -8,13 +8,13 @@ buildscript {
 }
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion '26.0.2'
+  compileSdkVersion 28
+  buildToolsVersion '28.0.3'
 
   defaultConfig {
     applicationId "com.mutualmobile.barricade.sample"
     minSdkVersion 16
-    targetSdkVersion 26
+    targetSdkVersion 28
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -49,14 +49,14 @@ dependencies {
 
   implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
 
-  implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-  implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+  implementation "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
+  implementation "com.squareup.retrofit2:converter-gson:${RETROFIT_VERSION}"
 
   testImplementation 'junit:junit:4.12'
   testImplementation 'com.google.truth:truth:0.35'
 
-  androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-  androidTestImplementation 'com.android.support.test:runner:1.0.1'
+  androidTestImplementation "com.android.support.test.espresso:espresso-core:${ESPRESSO_VERSION}"
+  androidTestImplementation "com.android.support.test:runner:${RUNNER_VERSION}"
   androidTestImplementation "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
 
   androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
@@ -68,7 +68,7 @@ dependencies {
     exclude group: 'com.android.support', module: 'support-annotations'
     exclude module: 'recyclerview-v7'
   }
-  compile project(path: ':barricade-annotations')
+  implementation project(path: ':barricade-annotations')
 }
 
 
