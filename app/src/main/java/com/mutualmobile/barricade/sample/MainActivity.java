@@ -15,6 +15,7 @@ import com.mutualmobile.barricade.Barricade;
 import com.mutualmobile.barricade.sample.api.ChuckNorrisApiService;
 import com.mutualmobile.barricade.sample.api.model.Joke;
 import com.mutualmobile.barricade.sample.api.util.ApiUtils;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
       }
     });
     jokeTextView = (TextView) findViewById(R.id.joke_text);
+    findViewById(R.id.get_joke_categories_button).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        onJokeCategoriesButtonClicked();
+      }
+    });
   }
 
   private void onJokeButtonClicked() {
@@ -78,6 +84,29 @@ public class MainActivity extends AppCompatActivity {
       }
 
       @Override public void onFailure(Call<Joke> call, Throwable t) {
+        Log.e(TAG, "(╯°□°)╯︵ ┻━┻", t);
+        showProgress(false);
+      }
+    });
+  }
+
+  private void onJokeCategoriesButtonClicked() {
+    showProgress(true);
+    chuckNorrisApiService.getJokeCategories().enqueue(new Callback<List<String>>() {
+      @Override public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+        if (response.isSuccessful()) {
+          StringBuilder str = new StringBuilder("Categories:\n");
+          for(String category: response.body()) {
+            str.append(category).append("\n");
+          }
+          jokeTextView.setText(str);
+        } else {
+          jokeTextView.setText("Request failed : " + response.code());
+        }
+        showProgress(false);
+      }
+
+      @Override public void onFailure(Call<List<String>> call, Throwable t) {
         Log.e(TAG, "(╯°□°)╯︵ ┻━┻", t);
         showProgress(false);
       }
