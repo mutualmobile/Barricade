@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+}
+
+android {
+  compileSdkVersion 28
+  buildToolsVersion '28.0.3'
+
+  defaultConfig {
+    applicationId "com.mutualmobile.barricade.sample"
+    minSdkVersion 16
+    targetSdkVersion 28
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  testOptions {
+    unitTests.all {
+      // All the usual Gradle options.
+      testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+      }
+    }
+  }
+}
+
+
+
+dependencies {
+  implementation "androidx.appcompat:appcompat:${SUPPORT_LIB_VERSION}"
+  implementation "androidx.cardview:cardview:${SUPPORT_LIB_VERSION}"
+
+  implementation project(':barricade')
+  annotationProcessor project(':barricade-compiler')
+
+  implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
+
+  implementation "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
+  implementation "com.squareup.retrofit2:converter-gson:${RETROFIT_VERSION}"
+
+  testImplementation 'junit:junit:4.12'
+  testImplementation 'com.google.truth:truth:0.35'
+
+  androidTestImplementation "androidx.test.espresso:espresso-core:${ESPRESSO_VERSION}"
+  androidTestImplementation "androidx.test:runner:${RUNNER_VERSION}"
+  androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIB_VERSION}"
+
+  androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+  androidTestImplementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+  androidTestImplementation('androidx.test.espresso:espresso-contrib:3.1.0-alpha4') {
+    // Necessary to avoid version conflicts
+    exclude group: 'com.android.support', module: 'appcompat'
+    exclude group: 'com.android.support', module: 'support-v4'
+    exclude group: 'com.android.support', module: 'support-annotations'
+    exclude module: 'recyclerview-v7'
+  }
+  implementation project(path: ':barricade-annotations')
+}
+
+
+configurations.all {
+  resolutionStrategy {
+    // cache dynamic versions for 10 minutes
+    cacheDynamicVersionsFor 10*60, 'seconds'
+    // don't cache changing modules at all
+    cacheChangingModulesFor 0, 'seconds'
+  }
+}

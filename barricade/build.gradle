@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+android {
+  compileSdkVersion 28
+  buildToolsVersion '28.0.3'
+
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 28
+    versionCode 1
+    versionName VERSION_NAME
+    vectorDrawables.useSupportLibrary = true
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+}
+
+ext {
+  bintrayName = 'barricade'
+  libraryName = 'Barricade'
+}
+
+dependencies {
+  implementation project(':barricade-annotations')
+
+  implementation "androidx.appcompat:appcompat:${SUPPORT_LIB_VERSION}"
+  implementation "androidx.legacy:legacy-support-v4:${SUPPORT_LIB_VERSION}"
+  implementation "androidx.recyclerview:recyclerview:${SUPPORT_LIB_VERSION}"
+
+  implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+
+  androidTestImplementation "androidx.test.espresso:espresso-core:${ESPRESSO_VERSION}"
+  androidTestImplementation "androidx.test:runner:${RUNNER_VERSION}"
+  androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIB_VERSION}"
+}
+
+apply from: '../bintray.gradle'

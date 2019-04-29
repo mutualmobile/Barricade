@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+      android:id="@+id/menu_delay"
+      android:icon="@drawable/ic_timer_white"
+      app:showAsAction="ifRoom"
+      android:title="@string/menu_delay"/>
+
+  <item
+      android:id="@+id/menu_reset"
+      android:icon="@drawable/ic_undo"
+      app:showAsAction="ifRoom"
+      android:title="@string/menu_reset"/>
+</menu>

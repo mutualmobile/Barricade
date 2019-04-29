@@ -1,0 +1,6 @@
+include ':app'
+include ':barricade-annotations'
+include ':barricade-compiler'
+include ':barricade'
+
+rootProject.name = 'barricade-parent'
