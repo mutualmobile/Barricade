@@ -13,7 +13,7 @@ android {
     versionCode 1
     versionName VERSION_NAME
     vectorDrawables.useSupportLibrary = true
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
   buildTypes {
@@ -37,15 +37,15 @@ ext {
 dependencies {
   implementation project(':barricade-annotations')
 
-  implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
-  implementation "com.android.support:support-v4:${SUPPORT_LIB_VERSION}"
-  implementation "com.android.support:recyclerview-v7:${SUPPORT_LIB_VERSION}"
+  implementation "androidx.appcompat:appcompat:${SUPPORT_LIB_VERSION}"
+  implementation "androidx.legacy:legacy-support-v4:${SUPPORT_LIB_VERSION}"
+  implementation "androidx.recyclerview:recyclerview:${SUPPORT_LIB_VERSION}"
 
   implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
 
-  androidTestImplementation "com.android.support.test.espresso:espresso-core:${ESPRESSO_VERSION}"
-  androidTestImplementation "com.android.support.test:runner:${RUNNER_VERSION}"
-  androidTestImplementation "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+  androidTestImplementation "androidx.test.espresso:espresso-core:${ESPRESSO_VERSION}"
+  androidTestImplementation "androidx.test:runner:${RUNNER_VERSION}"
+  androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIB_VERSION}"
 }
 
 apply from: '../bintray.gradle'
