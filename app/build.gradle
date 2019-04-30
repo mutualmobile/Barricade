@@ -68,7 +68,6 @@ dependencies {
     exclude group: 'com.android.support', module: 'support-annotations'
     exclude module: 'recyclerview-v7'
   }
-  implementation project(path: ':barricade-annotations')
 }
 
 

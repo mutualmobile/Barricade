@@ -1,7 +1,7 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 ext {
   bintrayName = 'barricade-compiler'
@@ -9,10 +9,10 @@ ext {
 }
 
 dependencies {
-  implementation 'com.google.auto.service:auto-service:1.0-rc2'
-  implementation 'com.squareup:javapoet:1.10.0'
-
   implementation project(':barricade-annotations')
+  compileOnly 'com.google.auto.service:auto-service:1.0-rc2'
+  implementation 'com.google.auto:auto-common:0.10'
+  api 'com.squareup:javapoet:1.10.0'
 }
 
 apply from: '../bintray.gradle'

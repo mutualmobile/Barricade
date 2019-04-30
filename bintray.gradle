@@ -1,77 +1,130 @@
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven'
 
-group = GROUP // Maven Group ID for the artifact
+version = VERSION_NAME
+group = GROUP
 
-install {
-  repositories.mavenInstaller {
-    // This generates POM.xml with proper parameters
-    pom {
-      project {
-        packaging 'aar'
-        groupId GROUP
-        artifactId bintrayName
+afterEvaluate { project ->
 
-        // Add your description here
-        name libraryName
-        description POM_DESCRIPTION
-        url POM_SITE_URL
+  if (project.getPlugins().hasPlugin('com.android.application') ||
+      project.getPlugins().hasPlugin('com.android.library')) {
+    task install(type: Upload, dependsOn: assemble) {
+      repositories.mavenInstaller {
+        configuration = configurations.archives
 
-        // Set your license
-        licenses {
-          license {
-            name POM_LICENCE_NAME
-            url POM_LICENCE_URL
-          }
-        }
-        developers {
-          developer {
-            id POM_DEVELOPER_ID
-            name POM_DEVELOPER_NAME
-            email POM_DEVELOPER_EMAIL
-          }
-        }
-        scm {
-          connection POM_GIT_URL
-          developerConnection POM_GIT_URL
+        pom.groupId = GROUP
+        pom.artifactId = POM_ARTIFACT_ID
+        pom.version = VERSION_NAME
+
+        pom.project {
+          name POM_NAME
+          packaging POM_PACKAGING
+          description POM_DESCRIPTION
           url POM_SITE_URL
+
+          licenses {
+            license {
+              name POM_LICENCE_NAME
+              url POM_LICENCE_URL
+            }
+          }
+          developers {
+            developer {
+              id POM_DEVELOPER_ID
+              name POM_DEVELOPER_NAME
+              email POM_DEVELOPER_EMAIL
+            }
+          }
+          scm {
+            connection POM_GIT_URL
+            developerConnection POM_GIT_URL
+            url POM_SITE_URL
+          }
         }
       }
     }
+
+    task androidJavadocs(type: Javadoc) {
+      source = android.sourceSets.main.java.source
+      classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+      classifier = 'javadoc'
+      from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+      classifier = 'sources'
+      from android.sourceSets.main.java.source
+    }
+  } else {
+    install {
+      repositories.mavenInstaller {
+        pom.groupId = GROUP
+        pom.artifactId = POM_ARTIFACT_ID
+        pom.version = VERSION_NAME
+        // This generates POM.xml with proper parameters
+        pom.project {
+          name POM_NAME
+          packaging POM_PACKAGING
+          description POM_DESCRIPTION
+          url POM_SITE_URL
+
+          // Set your license
+          licenses {
+            license {
+              name POM_LICENCE_NAME
+              url POM_LICENCE_URL
+            }
+          }
+          developers {
+            developer {
+              id POM_DEVELOPER_ID
+              name POM_DEVELOPER_NAME
+              email POM_DEVELOPER_EMAIL
+            }
+          }
+          scm {
+            connection POM_GIT_URL
+            developerConnection POM_GIT_URL
+            url POM_SITE_URL
+          }
+        }
+      }
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+      classifier = 'sources'
+      from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+      classifier = 'javadoc'
+      from javadoc.destinationDir
+    }
+  }
+
+  if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+  }
+
+  artifacts {
+    if (project.getPlugins().hasPlugin('com.android.application') ||
+        project.getPlugins().hasPlugin('com.android.library')) {
+      archives androidSourcesJar
+      archives androidJavadocsJar
+    } else {
+      archives sourcesJar
+      archives javadocJar
+    }
   }
 }
-
 apply plugin: 'com.jfrog.bintray'
 
-version = VERSION_NAME
-
-if (project.hasProperty("android")) {
-  // Android libraries
-  task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-  }
-
-  task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-  }
-} else {
-  // Java libraries
-  task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-  }
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-
-artifacts {
-  archives javadocJar
-  archives sourcesJar
-}
 
 // Bintray
 Properties properties = new Properties()

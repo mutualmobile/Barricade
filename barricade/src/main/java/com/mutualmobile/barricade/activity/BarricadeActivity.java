@@ -52,12 +52,12 @@ public class BarricadeActivity extends AppCompatActivity
   }
 
   private void initUi() {
-    setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+    setSupportActionBar(findViewById(R.id.toolbar));
     actionBar = getSupportActionBar();
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
-    endpointsRecyclerView = (RecyclerView) findViewById(R.id.endpoint_rv);
+    endpointsRecyclerView = findViewById(R.id.endpoint_rv);
     responsesRecyclerView = (RecyclerView) findViewById(R.id.endpoint_responses_rv);
 
     endpointsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
