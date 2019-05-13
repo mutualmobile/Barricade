@@ -11,6 +11,6 @@ public @interface Response {
   int statusCode() default 200;
 
   String type() default "application/json";
-
+  String paramCheck = "";
   boolean isDefault() default false;
 }

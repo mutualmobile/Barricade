@@ -129,6 +129,27 @@ public class Barricade {
         .build();
   }
 
+  /**
+   * Returns a barricaded response for an endpoint and matching params
+   *
+   * @param chain OkHttp Interceptor chain
+   * @param endpoint Endpoint that is being hit
+   * @return Barricaded response (if available), null otherwise
+   */
+  okhttp3.Response getResponseForParams(Interceptor.Chain chain, String endpoint,String params) {
+    BarricadeResponse barricadeResponse = barricadeConfig.getResponseForParams(endpoint,params);
+    if (barricadeResponse == null) {
+      return null;
+    }
+    String fileResponse = getResponseFromFile(endpoint, barricadeResponse.responseFileName);
+    return new okhttp3.Response.Builder().code(barricadeResponse.statusCode).message("Barricade OK")
+        .request(chain.request())
+        .protocol(Protocol.HTTP_1_0)
+        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))
+        .addHeader("content-type", barricadeResponse.contentType)
+        .build();
+  }
+
   public HashMap<String, BarricadeResponseSet> getConfig() {
     return barricadeConfig.getConfigs();
   }

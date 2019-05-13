@@ -1,5 +1,6 @@
 package com.mutualmobile.barricade.response;
 
+import com.mutualmobile.barricade.annotation.QueryParams;
 import java.util.List;
 
 /**

@@ -1,7 +1,43 @@
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.3.2'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+  }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'android-maven'
+apply plugin: 'maven-publish'
+
+
+configurations {
+  runtime {
+    extendsFrom compile
+  }
+}
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+
+
+publishing {
+  publications {
+    library(MavenPublication) {
+      setArtifactId(libraryName)
+      version VERSION_NAME
+      artifact(bundleReleaseAar)
+    }
+  }
+}
+
 
 android {
   compileSdkVersion 28
@@ -35,7 +71,7 @@ ext {
 }
 
 dependencies {
-  implementation project(':barricade-annotations')
+  api project(':barricade-annotations')
 
   implementation "androidx.appcompat:appcompat:${SUPPORT_LIB_VERSION}"
   implementation "androidx.legacy:legacy-support-v4:${SUPPORT_LIB_VERSION}"
@@ -48,4 +84,4 @@ dependencies {
   androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIB_VERSION}"
 }
 
-apply from: '../bintray.gradle'
+//apply from: '../bintray.gradle'
