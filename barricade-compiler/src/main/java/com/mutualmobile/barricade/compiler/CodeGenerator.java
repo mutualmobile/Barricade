@@ -47,6 +47,9 @@ final class CodeGenerator {
       ParameterizedTypeName.get(ClassName.get(HashMap.class), ClassName.get(String.class),
           ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class),
               ClassName.get(BarricadeResponse.class)));
+ private static final ParameterizedTypeName BARRICADE_RESPONSE_MAP =
+      ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class),
+              ClassName.get(BarricadeResponse.class));
 
   private CodeGenerator() {
   }
@@ -79,6 +82,7 @@ final class CodeGenerator {
     MethodSpec.Builder valuesMethod =  generateGetConfigsMethodBuilder();
     MethodSpec.Builder getResponseMethodBuilder = generateGetResponseMethodBuilder();
     MethodSpec.Builder getResponseForParamsMethodBuilder = generateGetResponseForParamsMethodBuilder();
+    MethodSpec.Builder getResponseFromParamsMethodBuilder = generateGetResponseFromParamsMethodBuilder();
 
     classBuilder.addType(generateEndpointsInnerClass(configs.keySet()));
     classBuilder.addType(generateResponsesInnerClass(configs));
@@ -90,6 +94,7 @@ final class CodeGenerator {
     classBuilder.addMethod(valuesMethod.build());
     classBuilder.addMethod(getResponseMethodBuilder.build());
     classBuilder.addMethod(getResponseForParamsMethodBuilder.build());
+    classBuilder.addMethod(getResponseFromParamsMethodBuilder.build());
 
     classBuilder.addSuperinterface(IBarricadeConfig.class);
 
@@ -206,7 +211,14 @@ final class CodeGenerator {
         .addParameter(String.class, "endpoint")
         .returns(BarricadeResponse.class)
         .addStatement("$T responseSet = configs.get(endpoint)", BarricadeResponseSet.class)
-        .addStatement("if(responseSet==null) return null")
+        .beginControlFlow("if(responseSet==null)")
+        .beginControlFlow("for (String key : configs.keySet())")
+        .beginControlFlow("if (endpoint.endsWith(key))")
+        .addStatement("return configs.get(key).responses.get(responseSet.defaultIndex)")
+        .endControlFlow()
+        .endControlFlow()
+        .addStatement("return null")
+        .endControlFlow()
         .addStatement("return responseSet.responses.get(responseSet.defaultIndex)");
   }
 
@@ -217,7 +229,32 @@ final class CodeGenerator {
         .addParameter(String.class,"params")
         .returns(BarricadeResponse.class)
         .addStatement("$T<$T,$T> paramMap = paramConfigs.get(endpoint)", Map.class,String.class,BarricadeResponse.class)
-        .addStatement("if(paramMap==null) return null")
-        .addStatement("return paramMap.get(params)");
+        .beginControlFlow("if(paramMap==null)")
+        .beginControlFlow("for (String key : paramConfigs.keySet())")
+        .beginControlFlow("if (endpoint.endsWith(key))")
+        .addStatement("paramMap=  paramConfigs.get(key)")
+        .addStatement("return  getResponseFromParamMap(paramMap,params)")
+        .endControlFlow()
+        .endControlFlow()
+        .addStatement("return null")
+        .endControlFlow()
+        .addStatement("return getResponseFromParamMap(paramMap,params)");
+  }
+
+  private static MethodSpec.Builder generateGetResponseFromParamsMethodBuilder() {
+    return MethodSpec.methodBuilder("getResponseFromParamMap")
+        .addModifiers(PRIVATE)
+        .addParameter(BARRICADE_RESPONSE_MAP, "paramMap")
+        .addParameter(String.class,"params")
+        .returns(BarricadeResponse.class)
+        .addStatement("BarricadeResponse response = paramMap.get(params)")
+        .beginControlFlow("if(response == null)")
+        .beginControlFlow("for(String key:paramMap.keySet())")
+        .beginControlFlow("if(params.contains(key))")
+        .addStatement("return paramMap.get(key)")
+        .endControlFlow()
+        .endControlFlow()
+        .endControlFlow()
+        .addStatement("return response");
   }
 }

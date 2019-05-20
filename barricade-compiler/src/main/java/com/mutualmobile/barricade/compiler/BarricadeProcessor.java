@@ -57,21 +57,10 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 				Barricade barricade = annotatedElement.getAnnotation(Barricade.class);
 				messager.printMessage(NOTE, "[Barricade] Processing endpoint: " + barricade.endpoint());
 				if (barricade.queryParams().length > 0) {
-					Map<String, BarricadeResponse> responseMap = new HashMap<>(barricade.queryParams().length);
-					for (QueryParams queryParams : barricade.queryParams()) {
-						StringBuilder query = new StringBuilder();
-						for (Params params : queryParams.params()) {
-							query.append(params.name()).append("=").append(params.value()).append("&");
-						}
-						responseMap.put(query.toString(), new BarricadeResponse(queryParams.response()));
-					}
+					Map<String, BarricadeResponse> responseMap = mapQueryParams(barricade);
 					paramConfig.put(barricade.endpoint(), responseMap);
 				} else if (barricade.requestJson().length > 0) {
-					Map<String, BarricadeResponse> responseMap = new HashMap<>(barricade.queryParams().length);
-					for (RequestJson postJson : barricade.requestJson()) {
-						String query = postJson.body();
-						responseMap.put(query, new BarricadeResponse(postJson.response()));
-					}
+					Map<String, BarricadeResponse> responseMap = mapRequestJson(barricade);
 					paramConfig.put(barricade.endpoint(), responseMap);
 				} else {
 					List<BarricadeResponse> responses = new ArrayList<>(barricade.responses().length);
@@ -97,6 +86,28 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 		}
 
 		return true;
+	}
+
+
+	private Map<String, BarricadeResponse> mapQueryParams(Barricade barricade){
+		Map<String, BarricadeResponse> responseMap = new HashMap<>(barricade.queryParams().length);
+		for (QueryParams queryParams : barricade.queryParams()) {
+			StringBuilder query = new StringBuilder();
+			for (Params params : queryParams.params()) {
+				query.append(params.name()).append("=").append(params.value()).append("&");
+			}
+			responseMap.put(query.toString(), new BarricadeResponse(queryParams.response()));
+		}
+		return responseMap;
+	}
+
+	private Map<String, BarricadeResponse> mapRequestJson(Barricade barricade){
+		Map<String, BarricadeResponse> responseMap = new HashMap<>(barricade.queryParams().length);
+		for (RequestJson postJson : barricade.requestJson()) {
+			String query = postJson.body();
+			responseMap.put(query, new BarricadeResponse(postJson.response()));
+		}
+		return responseMap;
 	}
 
 	private void generateCode(HashMap<String, Map<String,BarricadeResponse>> paramConfigs,HashMap<String, BarricadeResponseSet> configs) throws IOException {
