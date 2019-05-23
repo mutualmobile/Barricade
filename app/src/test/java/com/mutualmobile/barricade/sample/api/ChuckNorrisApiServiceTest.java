@@ -70,6 +70,26 @@ public class ChuckNorrisApiServiceTest {
     assertThat(joke.iconUrl).isEqualTo("https://assets.chucknorris.host/img/avatar/chuck-norris.png");
   }
 
+  @Test public void canFetchRandomJokeFromBarricadeWithPathUrl() throws IOException {
+    barricade.setEnabled(true);
+    Response<Joke> response = getApiService().getRandomJokePath("path").execute();
+
+    assertThat(response.isSuccessful()).isTrue();
+    assertThat(response.code()).isEqualTo(200);
+    assertThat(response.body()).isNotNull();
+
+    Joke joke = response.body();
+    assertThat(joke.id).isNotNull();
+    assertThat(joke.id).isNotEmpty();
+    assertThat(joke.id).isEqualTo("gX6RQU9EQxC4oZd6kVeiSw");
+    assertThat(joke.value).isNotNull();
+    assertThat(joke.value).isNotEmpty();
+    assertThat(joke.value).isEqualTo("When Chuck Norris was a kid, he made his mom eat her vegetables");
+    assertThat(joke.iconUrl).isNotNull();
+    assertThat(joke.iconUrl).isNotEmpty();
+    assertThat(joke.iconUrl).isEqualTo("https://assets.chucknorris.host/img/avatar/chuck-norris.png");
+  }
+
   @Test public void canSetBarricadeResponseAtRunTime() throws IOException {
     barricade.setEnabled(true).setResponse(BarricadeConfig.Endpoints.JOKESRANDOM, BarricadeConfig.Responses.Jokesrandom.FAILURE);
     Response<Joke> response = getApiService().getRandomJoke().execute();

@@ -1,7 +1,7 @@
 package com.mutualmobile.barricade.annotation;
 
 /**
- * Annotation to declare a params of API. It has sensible defaults for most params.
+ * Annotation to declare a params of API.
  */
 public @interface Params {
   String name();

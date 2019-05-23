@@ -164,15 +164,15 @@ final class CodeGenerator {
     for (Map.Entry<String, BarricadeResponseSet> entry : values.entrySet()) {
       BarricadeResponseSet barricadeResponseSet = entry.getValue();
 
-      String listName = "barricadeResponsesFor" + entry.getKey().replaceAll("/","");
+      String listName = "barricadeResponsesFor" + entry.getKey().replaceAll("/","").replaceAll("-","");
 
       methodBuilder.addStatement("$T<$T> " + listName + " = new $T<>()", List.class,
           BarricadeResponse.class, ArrayList.class);
 
       for (BarricadeResponse barricadeResponse : barricadeResponseSet.responses) {
-        methodBuilder.addStatement(listName + ".add(new $T($L, $S, $S))", BarricadeResponse.class,
+        methodBuilder.addStatement(listName + ".add(new $T($L, $S, $S, $S))", BarricadeResponse.class,
             barricadeResponse.statusCode, barricadeResponse.responseFileName,
-            barricadeResponse.contentType);
+            barricadeResponse.contentType,entry.getKey());
       }
 
       methodBuilder.addStatement(
@@ -181,15 +181,15 @@ final class CodeGenerator {
     }
     for (Map.Entry<String, Map<String,BarricadeResponse>> entry : paramConfigs.entrySet()) {
       Map<String,BarricadeResponse> paramResponse = entry.getValue();
-      String mapName = "paramValueMapFor" + entry.getKey().replaceAll("/","");
+      String mapName = "paramValueMapFor" + entry.getKey().replaceAll("/","").replaceAll("-","");
 
       methodBuilder.addStatement("$T<$T,$T> " + mapName + " = new $T<>()", Map.class, String.class,
           BarricadeResponse.class, HashMap.class);
 
       for (Map.Entry<String,BarricadeResponse> paramEntries : paramResponse.entrySet()) {
-        methodBuilder.addStatement(mapName + ".put($S,new $T($L, $S, $S))",paramEntries.getKey(), BarricadeResponse.class,
+        methodBuilder.addStatement(mapName + ".put($S,new $T($L, $S, $S, $S))",paramEntries.getKey(), BarricadeResponse.class,
             paramEntries.getValue().statusCode,  paramEntries.getValue().responseFileName,
-            paramEntries.getValue().contentType);
+            paramEntries.getValue().contentType,entry.getKey());
       }
       methodBuilder.addStatement(
           "paramConfigs.put($S," + mapName +")",entry.getKey());
@@ -214,7 +214,8 @@ final class CodeGenerator {
         .beginControlFlow("if(responseSet==null)")
         .beginControlFlow("for (String key : configs.keySet())")
         .beginControlFlow("if (endpoint.endsWith(key))")
-        .addStatement("return configs.get(key).responses.get(responseSet.defaultIndex)")
+        .addStatement("responseSet = configs.get(key)")
+        .addStatement("return responseSet.responses.get(responseSet.defaultIndex)")
         .endControlFlow()
         .endControlFlow()
         .addStatement("return null")

@@ -120,7 +120,7 @@ public class Barricade {
     if (barricadeResponse == null) {
       return null;
     }
-    String fileResponse = getResponseFromFile(endpoint, barricadeResponse.responseFileName);
+    String fileResponse = getResponseFromFile(barricadeResponse.filePath, barricadeResponse.responseFileName);
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode).message("Barricade OK")
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
@@ -139,9 +139,9 @@ public class Barricade {
   okhttp3.Response getResponseForParams(Interceptor.Chain chain, String endpoint,String params) {
     BarricadeResponse barricadeResponse = barricadeConfig.getResponseForParams(endpoint,params);
     if (barricadeResponse == null) {
-      return null;
+      return getResponse(chain,endpoint);
     }
-    String fileResponse = getResponseFromFile(endpoint, barricadeResponse.responseFileName);
+    String fileResponse = getResponseFromFile(barricadeResponse.filePath, barricadeResponse.responseFileName);
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode).message("Barricade OK")
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)

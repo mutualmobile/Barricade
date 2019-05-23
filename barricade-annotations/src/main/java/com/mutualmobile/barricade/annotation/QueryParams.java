@@ -1,7 +1,7 @@
 package com.mutualmobile.barricade.annotation;
 
 /**
- * Created by Vikram on 09/05/19.
+ * Annotations to declare query parameters and response for corresponding query params
  */
 public @interface QueryParams {
 	Params[] params();

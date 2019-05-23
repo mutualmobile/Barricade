@@ -13,6 +13,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  */
 @Documented @Retention(CLASS) @Target(ElementType.METHOD) public @interface Barricade {
   String endpoint() default "";
+  UrlPath[] path() default {};
   QueryParams[] queryParams() default {};
   RequestJson[] requestJson() default {};
   Response[] responses() default {};

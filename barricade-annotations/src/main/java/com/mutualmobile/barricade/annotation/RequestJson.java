@@ -1,7 +1,7 @@
 package com.mutualmobile.barricade.annotation;
 
 /**
- * Created by Vikram on 09/05/19.
+ * Annotations for Post Request body and corresponding response
  */
 public @interface RequestJson {
 	String body();

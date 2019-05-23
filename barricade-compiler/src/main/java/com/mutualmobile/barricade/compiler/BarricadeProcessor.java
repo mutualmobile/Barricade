@@ -6,6 +6,7 @@ import com.mutualmobile.barricade.annotation.Params;
 import com.mutualmobile.barricade.annotation.QueryParams;
 import com.mutualmobile.barricade.annotation.RequestJson;
 import com.mutualmobile.barricade.annotation.Response;
+import com.mutualmobile.barricade.annotation.UrlPath;
 import com.mutualmobile.barricade.response.BarricadeResponse;
 import com.mutualmobile.barricade.response.BarricadeResponseSet;
 import java.io.IOException;
@@ -55,25 +56,21 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 			// Iterate over all @Barricade annotated elements
 			for (Element annotatedElement : roundEnvironment.getElementsAnnotatedWith(Barricade.class)) {
 				Barricade barricade = annotatedElement.getAnnotation(Barricade.class);
-				messager.printMessage(NOTE, "[Barricade] Processing endpoint: " + barricade.endpoint());
+				messager.printMessage(NOTE, "[Barricade] Processing Start for endpoint: " + barricade.endpoint());
 				if (barricade.queryParams().length > 0) {
 					Map<String, BarricadeResponse> responseMap = mapQueryParams(barricade);
 					paramConfig.put(barricade.endpoint(), responseMap);
 				} else if (barricade.requestJson().length > 0) {
 					Map<String, BarricadeResponse> responseMap = mapRequestJson(barricade);
 					paramConfig.put(barricade.endpoint(), responseMap);
-				} else {
-					List<BarricadeResponse> responses = new ArrayList<>(barricade.responses().length);
-					int defaultIndex = 0;
-
-					for (int i = 0; i < barricade.responses().length; i++) {
-						Response option = barricade.responses()[i];
-						responses.add(new BarricadeResponse(option));
-						if (option.isDefault()) {
-							defaultIndex = i;
-						}
+				} else if (barricade.path().length > 0) {
+					for (int i = 0; i < barricade.path().length; i++) {
+						UrlPath urlPath = barricade.path()[i];
+						String endPoint = barricade.endpoint() + urlPath.path();
+						configs.putAll(mapEndPoints(endPoint, urlPath.responses()));
 					}
-					configs.put(barricade.endpoint(), new BarricadeResponseSet(responses, defaultIndex));
+				} else {
+					configs.putAll(mapEndPoints(barricade.endpoint(), barricade.responses()));
 				}
 			}
 
@@ -88,6 +85,22 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 		return true;
 	}
 
+	private Map<String, BarricadeResponseSet> mapEndPoints(String endPoint, Response[] responses){
+		Map<String, BarricadeResponseSet> responseMap = new HashMap();
+		List<BarricadeResponse> responseList = new ArrayList(responses.length);
+		int defaultIndex = 0;
+
+		for (int i = 0; i < responses.length; i++) {
+			Response option = responses[i];
+			responseList.add(new BarricadeResponse(option,endPoint));
+			if (option.isDefault()) {
+				defaultIndex = i;
+			}
+		}
+		responseMap.put(endPoint, new BarricadeResponseSet(responseList, defaultIndex));
+		return  responseMap;
+	}
+
 
 	private Map<String, BarricadeResponse> mapQueryParams(Barricade barricade){
 		Map<String, BarricadeResponse> responseMap = new HashMap<>(barricade.queryParams().length);
@@ -96,7 +109,7 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 			for (Params params : queryParams.params()) {
 				query.append(params.name()).append("=").append(params.value()).append("&");
 			}
-			responseMap.put(query.toString(), new BarricadeResponse(queryParams.response()));
+			responseMap.put(query.toString(), new BarricadeResponse(queryParams.response(),barricade.endpoint()));
 		}
 		return responseMap;
 	}
@@ -105,7 +118,7 @@ import static javax.tools.Diagnostic.Kind.NOTE;
 		Map<String, BarricadeResponse> responseMap = new HashMap<>(barricade.queryParams().length);
 		for (RequestJson postJson : barricade.requestJson()) {
 			String query = postJson.body();
-			responseMap.put(query, new BarricadeResponse(postJson.response()));
+			responseMap.put(query, new BarricadeResponse(postJson.response(),barricade.endpoint()));
 		}
 		return responseMap;
 	}
