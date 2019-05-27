@@ -164,7 +164,7 @@ final class CodeGenerator {
     for (Map.Entry<String, BarricadeResponseSet> entry : values.entrySet()) {
       BarricadeResponseSet barricadeResponseSet = entry.getValue();
 
-      String listName = "barricadeResponsesFor" + entry.getKey().replaceAll("/","").replaceAll("-","");
+      String listName = "barricadeResponsesFor" + entry.getKey().replaceAll("[^a-zA-Z0-9_]+","");
 
       methodBuilder.addStatement("$T<$T> " + listName + " = new $T<>()", List.class,
           BarricadeResponse.class, ArrayList.class);
@@ -181,7 +181,7 @@ final class CodeGenerator {
     }
     for (Map.Entry<String, Map<String,BarricadeResponse>> entry : paramConfigs.entrySet()) {
       Map<String,BarricadeResponse> paramResponse = entry.getValue();
-      String mapName = "paramValueMapFor" + entry.getKey().replaceAll("/","").replaceAll("-","");
+      String mapName = "paramValueMapFor" + entry.getKey().replaceAll("[^a-zA-Z0-9_]+","");
 
       methodBuilder.addStatement("$T<$T,$T> " + mapName + " = new $T<>()", Map.class, String.class,
           BarricadeResponse.class, HashMap.class);
@@ -213,7 +213,7 @@ final class CodeGenerator {
         .addStatement("$T responseSet = configs.get(endpoint)", BarricadeResponseSet.class)
         .beginControlFlow("if(responseSet==null)")
         .beginControlFlow("for (String key : configs.keySet())")
-        .beginControlFlow("if (endpoint.endsWith(key))")
+        .beginControlFlow("if ((key.endsWith(\"/*\")&& endpoint.contains(key.substring(0,key.length()-2)))||endpoint.endsWith(key))")
         .addStatement("responseSet = configs.get(key)")
         .addStatement("return responseSet.responses.get(responseSet.defaultIndex)")
         .endControlFlow()
