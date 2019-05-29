@@ -35,6 +35,7 @@ public class Barricade {
   private long delay = DEFAULT_DELAY;
 
   private boolean enabled = false;
+  private BarricadeShakeListener barricadeShakeListener;
 
   /**
    * @return The singleton instance of the Barricade
@@ -50,14 +51,25 @@ public class Barricade {
   private Barricade() {
   }
 
-  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay, Application application) {
+  public void enableShakeListener(Application application){
+    if (application != null && barricadeShakeListener == null) {
+        barricadeShakeListener= new BarricadeShakeListener(application);
+    }else if(barricadeShakeListener!=null){
+      barricadeShakeListener.enableShakeListener();
+    }
+  }
+
+  public void disableShakeListener() {
+    if (barricadeShakeListener != null) {
+      barricadeShakeListener.disableShakeListener();
+    }
+  }
+
+
+  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay) {
     this.barricadeConfig = barricadeConfig;
     this.fileManager = fileManager;
     this.delay = delay;
-
-    if (application != null) {
-      new BarricadeShakeListener(application);
-    }
   }
 
   public boolean isEnabled() {
@@ -82,11 +94,6 @@ public class Barricade {
       this.fileManager = fileManager;
     }
 
-    public Builder enableShakeToStart(Application application) {
-      this.application = application;
-      return this;
-    }
-
     public Builder setGlobalDelay(long delay) {
       this.delay = delay;
       return this;
@@ -100,7 +107,7 @@ public class Barricade {
      */
     public Barricade install() {
       if (instance == null) {
-        instance = new Barricade(fileManager, barricadeConfig, delay, application);
+        instance = new Barricade(fileManager, barricadeConfig, delay);
       } else {
         Logger.getLogger(TAG).info("Barricade already installed, install() will be ignored.");
       }
