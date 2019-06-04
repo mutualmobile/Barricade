@@ -1,6 +1,7 @@
 package com.mutualmobile.barricade;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import okhttp3.Interceptor;
@@ -17,10 +18,14 @@ public class BarricadeInterceptor implements Interceptor {
   @Override public Response intercept(Chain chain) throws IOException {
     if (barricade.isEnabled()) {
       Request request = chain.request();
-      List<String> pathSegments = request.url().pathSegments();
-      String endpoint = pathSegments.get(pathSegments.size() - 1);
-
-      Response response = barricade.getResponse(chain, endpoint);
+      String endpoint = request.url().encodedPath();
+      String queryString = getParams(request);
+      Response response = null;
+      if(!queryString.isEmpty()){
+        response = barricade.getResponseForParams(chain, endpoint,queryString);
+      }else {
+        response = barricade.getResponse(chain, endpoint);
+      }
       if (response != null) {
         try {
           Thread.sleep(barricade.getDelay());
@@ -35,5 +40,34 @@ public class BarricadeInterceptor implements Interceptor {
     } else {
       return chain.proceed(chain.request());
     }
+  }
+
+  private String getParams(Request request){
+    String requestType = request.method();
+    switch (requestType.trim().toUpperCase()){
+      case "PUT" :
+      case "POST" : {
+        //Todo : fetch parameters from post request
+        return "";
+      }
+      case "GET" :
+      default : {
+       return getFormattedQuery(request);
+      }
+    }
+  }
+
+
+  private String getFormattedQuery(Request request){
+    Iterator<String>  paramIterator = request.url().queryParameterNames().iterator();
+    StringBuilder query = new StringBuilder();
+    while(paramIterator.hasNext()){
+      String paramName =paramIterator.next();
+      List<String>values = request.url().queryParameterValues(paramName);
+      for(String value: values){
+        query.append(paramName).append("=").append(value).append("&");
+      }
+    }
+    return query.toString();
   }
 }

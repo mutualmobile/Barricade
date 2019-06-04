@@ -11,4 +11,5 @@ public interface IBarricadeConfig {
   HashMap<String, BarricadeResponseSet> getConfigs();
 
   BarricadeResponse getResponseForEndpoint(String endpoint);
+  BarricadeResponse getResponseForParams(String endpoint,String params);
 }

@@ -35,7 +35,7 @@ ext {
 }
 
 dependencies {
-  implementation project(':barricade-annotations')
+  api project(':barricade-annotations')
 
   implementation "androidx.appcompat:appcompat:${SUPPORT_LIB_VERSION}"
   implementation "androidx.legacy:legacy-support-v4:${SUPPORT_LIB_VERSION}"
