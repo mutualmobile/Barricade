@@ -14,15 +14,15 @@ import retrofit2.http.Query;
 
 public interface ChuckNorrisApiService {
 
-  @GET("/jokes/random") @Barricade(endpoint = "/jokes/random", responses = {
+  @GET("/jokes/random") @Barricade(endpoint = "jokes/random", responses = {
       @Response(fileName = "success.json",isDefault = true),
       @Response(fileName = "failure.json", statusCode = 401)
   }) Call<Joke> getRandomJoke();
 
 
-
+  /*Example of of using barricade with query params*/
   @GET("/jokes/random")
-  @Barricade(endpoint = "/jokes/random",
+  @Barricade(endpoint = "jokes/random",
       queryParams = {
         @QueryParams( params = {@Params(name = "path",value = "success")} ,
           response = @Response(fileName = "success.json",isDefault = true)),
@@ -34,8 +34,9 @@ public interface ChuckNorrisApiService {
       @Response(fileName = "failure.json", statusCode = 401)
   }) Call<Joke> getRandomJoke(@Query("path")String test);
 
+  /*Using barricade with url path param */
   @GET("/jokes/{path}")
-  @Barricade(endpoint = "/jokes/",
+  @Barricade(endpoint = "jokes/",
       path = {@UrlPath(path = "path", responses = { @Response(fileName = "success.json") }) })
   Call<Joke> getRandomJokePath(@Path("path") String test);
 
