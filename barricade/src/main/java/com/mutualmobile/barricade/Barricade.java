@@ -35,6 +35,7 @@ public class Barricade {
   private long delay = DEFAULT_DELAY;
 
   private boolean enabled = false;
+  private BarricadeShakeListener barricadeShakeListener;
 
   /**
    * @return The singleton instance of the Barricade
@@ -50,14 +51,25 @@ public class Barricade {
   private Barricade() {
   }
 
-  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay, Application application) {
+  public void enableShakeListener(Application application){
+    if (application != null && barricadeShakeListener == null) {
+        barricadeShakeListener= new BarricadeShakeListener(application);
+    }else if(barricadeShakeListener!=null){
+      barricadeShakeListener.enableShakeListener();
+    }
+  }
+
+  public void disableShakeListener() {
+    if (barricadeShakeListener != null) {
+      barricadeShakeListener.disableShakeListener();
+    }
+  }
+
+
+  private Barricade(AssetFileManager fileManager, IBarricadeConfig barricadeConfig, long delay) {
     this.barricadeConfig = barricadeConfig;
     this.fileManager = fileManager;
     this.delay = delay;
-
-    if (application != null) {
-      new BarricadeShakeListener(application);
-    }
   }
 
   public boolean isEnabled() {
@@ -82,11 +94,6 @@ public class Barricade {
       this.fileManager = fileManager;
     }
 
-    public Builder enableShakeToStart(Application application) {
-      this.application = application;
-      return this;
-    }
-
     public Builder setGlobalDelay(long delay) {
       this.delay = delay;
       return this;
@@ -100,7 +107,7 @@ public class Barricade {
      */
     public Barricade install() {
       if (instance == null) {
-        instance = new Barricade(fileManager, barricadeConfig, delay, application);
+        instance = new Barricade(fileManager, barricadeConfig, delay);
       } else {
         Logger.getLogger(TAG).info("Barricade already installed, install() will be ignored.");
       }
@@ -120,7 +127,28 @@ public class Barricade {
     if (barricadeResponse == null) {
       return null;
     }
-    String fileResponse = getResponseFromFile(endpoint, barricadeResponse.responseFileName);
+    String fileResponse = getResponseFromFile(barricadeResponse.filePath, barricadeResponse.responseFileName);
+    return new okhttp3.Response.Builder().code(barricadeResponse.statusCode).message("Barricade OK")
+        .request(chain.request())
+        .protocol(Protocol.HTTP_1_0)
+        .body(ResponseBody.create(MediaType.parse(barricadeResponse.contentType), fileResponse.getBytes()))
+        .addHeader("content-type", barricadeResponse.contentType)
+        .build();
+  }
+
+  /**
+   * Returns a barricaded response for an endpoint and matching params
+   *
+   * @param chain OkHttp Interceptor chain
+   * @param endpoint Endpoint that is being hit
+   * @return Barricaded response (if available), null otherwise
+   */
+  okhttp3.Response getResponseForParams(Interceptor.Chain chain, String endpoint,String params) {
+    BarricadeResponse barricadeResponse = barricadeConfig.getResponseForParams(endpoint,params);
+    if (barricadeResponse == null) {
+      return getResponse(chain,endpoint);
+    }
+    String fileResponse = getResponseFromFile(barricadeResponse.filePath, barricadeResponse.responseFileName);
     return new okhttp3.Response.Builder().code(barricadeResponse.statusCode).message("Barricade OK")
         .request(chain.request())
         .protocol(Protocol.HTTP_1_0)
