@@ -1,82 +1,84 @@
-apply plugin: 'com.android.application'
-
-buildscript {
-  repositories {
-    jcenter()
-    mavenCentral()
-  }
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp' version "1.6.10-1.0.4"
 }
 
 android {
-  compileSdkVersion 28
-  buildToolsVersion '28.0.3'
+    compileSdk 32
 
-  defaultConfig {
-    applicationId "com.mutualmobile.barricade.sample"
-    minSdkVersion 16
-    targetSdkVersion 28
-    versionCode 1
-    versionName "1.0"
-    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-  }
-  buildTypes {
-    release {
-      minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-    }
-  }
+    defaultConfig {
+        applicationId "com.mutualmobile.barricade"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
 
-  testOptions {
-    unitTests.all {
-      // All the usual Gradle options.
-      testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-        outputs.upToDateWhen { false }
-        showStandardStreams = true
-      }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
-  }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        kotlin {
+            kotlinOptions {
+                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            }
+        }
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    sourceSets {
+        debug {
+            kotlin { srcDir(file("build/generated/ksp/debug/kotlin")) }
+        }
+        release {
+            kotlin { srcDir(file("build/generated/ksp/release/kotlin")) }
+        }
+    }
 }
-
-
 
 dependencies {
-  implementation "androidx.appcompat:appcompat:${SUPPORT_LIB_VERSION}"
-  implementation "androidx.cardview:cardview:${SUPPORT_LIB_VERSION}"
 
-  implementation project(':barricade')
-  annotationProcessor project(':barricade-compiler')
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation implementation(project(':barricade',))
 
-  implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
+    implementation(project(":barricade-annotations"))
+    ksp(project(":barricade-compiler"))
 
-  implementation "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
-  implementation "com.squareup.retrofit2:converter-gson:${RETROFIT_VERSION}"
-
-  testImplementation 'junit:junit:4.12'
-  testImplementation 'com.google.truth:truth:0.35'
-
-  androidTestImplementation "androidx.test.espresso:espresso-core:${ESPRESSO_VERSION}"
-  androidTestImplementation "androidx.test:runner:${RUNNER_VERSION}"
-  androidTestImplementation "androidx.annotation:annotation:${SUPPORT_LIB_VERSION}"
-
-  androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
-  androidTestImplementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
-  androidTestImplementation('androidx.test.espresso:espresso-contrib:3.1.0-alpha4') {
-    // Necessary to avoid version conflicts
-    exclude group: 'com.android.support', module: 'appcompat'
-    exclude group: 'com.android.support', module: 'support-v4'
-    exclude group: 'com.android.support', module: 'support-annotations'
-    exclude module: 'recyclerview-v7'
-  }
-  implementation project(path: ':barricade-annotations')
-}
-
-
-configurations.all {
-  resolutionStrategy {
-    // cache dynamic versions for 10 minutes
-    cacheDynamicVersionsFor 10*60, 'seconds'
-    // don't cache changing modules at all
-    cacheChangingModulesFor 0, 'seconds'
-  }
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
 }
