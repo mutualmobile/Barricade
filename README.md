@@ -1,4 +1,6 @@
-# Barricade
+# ⛔️ DEPRECATED
+This repository is no longer being maintained in favour of its new version `Barricade2`. Please check out Barricade2 [here](https://github.com/mutualmobile/Barricade2).
+## Barricade
 
 [![Build Status](https://travis-ci.org/mutualmobile/Barricade.svg)](https://travis-ci.org/mutualmobile/Barricade)
 [![Version](https://api.bintray.com/packages/mutualmobile/Android/barricade/images/download.svg)](https://bintray.com/mutualmobile/Android/barricade)
