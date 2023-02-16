@@ -1,8 +1,7 @@
 <resources>
-  <string name="app_name">Barricade Sample</string>
-
-  <string name="get_joke">Get Joke</string>
-  <string name="get_joke_categories">Get Joke Categories</string>
-  <string name="barricade">Barricade</string>
-  <string name="menu_config_label">Configuration</string>
+    <string name="app_name">Barricade Sample</string>
+    <string name="configBtnDesc">Configuration</string>
+    <string name="barricade">Barricade</string>
+    <string name="getJoke">Get Joke</string>
+    <string name="getJokeCategories">Get Joke Categories</string>
 </resources>
